@@ -2,7 +2,7 @@
 
 public class DbConnect
 {
-    public string connectionString { get; set; };
+    public string connectionString { get; set; }
     public DbConnect()
     {
         
