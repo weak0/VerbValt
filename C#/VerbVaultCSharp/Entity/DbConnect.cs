@@ -2,5 +2,8 @@
 
 public class DbConnect
 {
-    
+    public DbConnect()
+    {
+        
+    }
 }
