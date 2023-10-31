@@ -1,6 +1,5 @@
 package com.example.verbvaultjava.model.dto;
 
-import com.example.verbvaultjava.model.Course;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +10,6 @@ import java.util.Set;
 public class UserResponse {
     private String username;
     private String email;
-    private Set<WorldDto> worlds=new HashSet<>();
+    private Set<WordDto> wordDto;
     //private Course course;
 }

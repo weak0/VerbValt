@@ -1,13 +1,13 @@
 package com.example.verbvaultjava.model;
 
+import com.example.verbvaultjava.model.course.Course;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Table(name = "_users")
+@Table(name = "users")
 @Data
 public class User {
     @Id
@@ -16,9 +16,11 @@ public class User {
     private String username;
     private String password;
     private String email;
-    @OneToMany
-    private Set<World>worlds=new HashSet<>();
-    @OneToOne
+   @OneToMany(mappedBy = "user")
+    private List<Word> words;
+   @OneToOne
+   @JoinColumn(name = "course_id")
     private Course course;
+
 
 }

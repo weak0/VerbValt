@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class WorldDto {
+public class WordDto {
     private String foreignWord;
     private String translation;
 }

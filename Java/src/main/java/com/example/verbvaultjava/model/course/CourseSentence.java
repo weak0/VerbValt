@@ -1,4 +1,4 @@
-package com.example.verbvaultjava.model;
+package com.example.verbvaultjava.model.course;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,6 +11,12 @@ public class CourseSentence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String foreignSentence;
+    private boolean status;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
     @OneToOne
-    private CourseWorld courseWorld;
+    @JoinColumn(name = "course_word_id")
+    private CourseWord courseWord;
+
 }
