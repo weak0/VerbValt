@@ -2,6 +2,7 @@ package com.example.verbvaultjava.controller;
 
 import com.example.verbvaultjava.model.dto.UserResponse;
 import com.example.verbvaultjava.service.UserService;
+import com.example.verbvaultjava.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
