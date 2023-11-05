@@ -16,11 +16,18 @@ public class User {
     private String username;
     private String password;
     private String email;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
    @OneToMany(mappedBy = "user")
     private List<Word> words;
-   @OneToOne
-   @JoinColumn(name = "course_id")
-    private Course course;
-
+   @ManyToMany
+   @JoinTable(
+           name = "user_course",
+           joinColumns = @JoinColumn(name = "user_id"),
+           inverseJoinColumns = @JoinColumn(name = "course_id")
+   )
+    private List<Course>courses;
 
 }
