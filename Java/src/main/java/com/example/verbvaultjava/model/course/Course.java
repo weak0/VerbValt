@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -20,8 +21,8 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private List<User> users;
     @OneToMany(mappedBy = "course")
-    private List<CourseSentence> courseSentences;
+    private Set<CourseSentence> courseSentences;
     @OneToMany(mappedBy = "course")
-    private List<CourseWord> courseWords;
+    private Set<CourseWord> courseWords;
 
 }

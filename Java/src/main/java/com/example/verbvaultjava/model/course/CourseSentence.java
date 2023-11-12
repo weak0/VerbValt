@@ -11,6 +11,7 @@ public class CourseSentence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String foreignSentence;
+    private String translation;
     private boolean status;
     @ManyToOne
     @JoinColumn(name = "course_id")
