@@ -4,8 +4,8 @@ import com.example.verbvaultjava.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
@@ -19,10 +19,10 @@ public class Course {
     private String courseLevel;
 
     @ManyToMany(mappedBy = "courses")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
     @OneToMany(mappedBy = "course")
-    private Set<CourseSentence> courseSentences;
+    private List<CourseSentence> courseSentences = new ArrayList<>();
     @OneToMany(mappedBy = "course")
-    private Set<CourseWord> courseWords;
+    private List<CourseWord> courseWords = new ArrayList<>();
 
 }

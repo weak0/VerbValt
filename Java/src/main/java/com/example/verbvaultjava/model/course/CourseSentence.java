@@ -16,8 +16,5 @@ public class CourseSentence {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
-    @OneToOne
-    @JoinColumn(name = "course_word_id")
-    private CourseWord courseWord;
 
 }

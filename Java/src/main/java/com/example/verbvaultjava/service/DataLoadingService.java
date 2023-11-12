@@ -4,6 +4,8 @@ import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.course.CourseSentence;
 import com.example.verbvaultjava.model.course.CourseWord;
 import com.example.verbvaultjava.repository.CourseRepository;
+import com.example.verbvaultjava.repository.CourseSentenceRepository;
+import com.example.verbvaultjava.repository.CourseWordRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,37 +23,52 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DataLoadingService {
     private final CourseRepository courseRepository;
+    private final CourseSentenceRepository courseSentenceRepository;
+    private final CourseWordRepository courseWordRepository;
 
     @Transactional
     public void loadWords(String path, String courseLevel) {
-        CourseWord courseWord = new CourseWord();
-        List<String[]> lines = loadFromCSV(path);
-        Course courseFromDb = getCourse(courseLevel);
 
-        for (String[] row : lines) {
-                courseWord.setForeignWord(row[0]);
-                courseWord.setTranslation(row[1]);
-                courseFromDb.getCourseWords().add(courseWord);
+            List<String[]> lines = loadFromCSV(path);
+            Course courseFromDb = getCourse(courseLevel);
+
+            for (String[] row : lines) {
+                if (!courseWordRepository.existsByForeignWord(row[0])){
+                    CourseWord courseWord = new CourseWord();
+                    courseWord.setForeignWord(row[0]);
+                    courseWord.setTranslation(row[1]);
+                    courseWord.setCourse(courseFromDb);
+                    CourseWord save = courseWordRepository.save(courseWord);
+                    courseFromDb.getCourseWords().add(save);
+                }
 
 
-        }
-        courseRepository.save(courseFromDb);
+            }
+            courseRepository.save(courseFromDb);
+
+
     }
-
 
 
     @Transactional
     public void loadSentences(String path, String courseLevel) {
-        CourseSentence courseSentence = new CourseSentence();
-        List<String[]> lines = loadFromCSV(path);
-        Course courseFromDb = getCourse(courseLevel);
 
-        for (String[] row : lines) {
-            courseSentence.setForeignSentence(row[0]);
-            courseSentence.setTranslation(row[1]);
-            courseFromDb.getCourseSentences().add(courseSentence);
-        }
-        courseRepository.save(courseFromDb);
+            List<String[]> lines = loadFromCSV(path);
+            Course courseFromDb = getCourse(courseLevel);
+
+            for (String[] row : lines) {
+               if (!courseSentenceRepository.existsByForeignSentence(row[0])){
+                   CourseSentence courseSentence = new CourseSentence();
+                   courseSentence.setForeignSentence(row[0]);
+                   courseSentence.setTranslation(row[1]);
+                   courseSentence.setCourse(courseFromDb);
+                   CourseSentence save = courseSentenceRepository.save(courseSentence);
+                   courseFromDb.getCourseSentences().add(save);
+               }
+            }
+            courseRepository.save(courseFromDb);
+
+
     }
 
     private Course getCourse(String courseLevel) {

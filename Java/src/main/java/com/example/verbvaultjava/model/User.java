@@ -4,6 +4,7 @@ import com.example.verbvaultjava.model.course.Course;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,13 +22,13 @@ public class User {
     private Role role;
 
    @OneToMany(mappedBy = "user")
-    private List<Word> words;
+    private List<Word> words= new ArrayList<>();
    @ManyToMany
    @JoinTable(
            name = "user_course",
            joinColumns = @JoinColumn(name = "user_id"),
            inverseJoinColumns = @JoinColumn(name = "course_id")
    )
-    private List<Course>courses;
+    private List<Course>courses= new ArrayList<>();
 
 }
