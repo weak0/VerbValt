@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using VerbVaultCSharp.Entity;
 using VerbVaultCSharp.JavaClient;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IConnection, Connection>(sp => new Connection("http://localhost:8000"));
+builder.Services.AddDbContext<VerbVaultDb>( options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IGetUsers, GetUsers>();
 
 var app = builder.Build();
