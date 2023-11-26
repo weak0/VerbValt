@@ -1,4 +1,4 @@
-﻿namespace VerbVaultCSharp.Entity;
+﻿namespace VerbVaultCSharp.JavaClient;
 
 public class User
 {
