@@ -4,7 +4,7 @@ namespace VerbVaultCSharp.JavaClient;
 
 public interface IGetUsers
 {
-    Task<List<User>> GetUsersAsync();
+    Task<List<JUser>> GetUsersAsync();
 }
 
 public class GetUsers : IGetUsers
@@ -16,10 +16,10 @@ public class GetUsers : IGetUsers
         _connection = connection;
     }
     
-    public async Task<List<User>> GetUsersAsync()
+    public async Task<List<JUser>> GetUsersAsync()
     {
           var result  = await _connection.GetAsync("/users");
-          var mappedResult  = JsonConvert.DeserializeObject<List<User>>(result);
+          var mappedResult  = JsonConvert.DeserializeObject<List<JUser>>(result);
           return mappedResult;
     }
     
