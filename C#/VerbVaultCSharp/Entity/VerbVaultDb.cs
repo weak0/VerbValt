@@ -6,5 +6,6 @@ public class VerbVaultDb : DbContext
 {
     public VerbVaultDb(DbContextOptions<VerbVaultDb> options) : base(options) { }
     public DbSet<Word> words { get; set; }
+    // DbSet<User> Users { get; set; }
 
 }

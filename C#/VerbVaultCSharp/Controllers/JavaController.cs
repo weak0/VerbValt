@@ -14,7 +14,7 @@ public class JavaController : ControllerBase
     }
 
     [HttpGet("/users")]
-    public async Task<ActionResult<User>> Get()
+    public async Task<ActionResult<JUser>> Get()
     {
         var result = await _getUsers.GetUsersAsync();
         return Ok(result);
