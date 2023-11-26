@@ -1,4 +1,4 @@
-package com.example.verbvaultjava.service;
+package com.example.verbvaultjava.service.user;
 
 
 import com.example.verbvaultjava.model.Role;
@@ -8,6 +8,7 @@ import com.example.verbvaultjava.model.dto.UserResponse;
 import com.example.verbvaultjava.model.dto.WordDto;
 import com.example.verbvaultjava.repository.RoleRepository;
 import com.example.verbvaultjava.repository.UserRepository;
+import com.example.verbvaultjava.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

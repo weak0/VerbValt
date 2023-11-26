@@ -1,4 +1,4 @@
-package com.example.verbvaultjava.service;
+package com.example.verbvaultjava.service.user;
 
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.dto.UserDto;
