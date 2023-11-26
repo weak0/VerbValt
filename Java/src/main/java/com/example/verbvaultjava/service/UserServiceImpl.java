@@ -1,15 +1,19 @@
 package com.example.verbvaultjava.service;
 
 
+import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
+import com.example.verbvaultjava.model.dto.UserDto;
 import com.example.verbvaultjava.model.dto.UserResponse;
 import com.example.verbvaultjava.model.dto.WordDto;
+import com.example.verbvaultjava.repository.RoleRepository;
 import com.example.verbvaultjava.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -17,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     public List<UserResponse> getUsersResponse() {
         List<User> all = userRepository.findAll();
@@ -40,5 +45,24 @@ public class UserServiceImpl implements UserService {
         return responses;
     }
 
+    @Override
+    public User createUser(UserDto userDto) {
+        Role role;
+        Optional<Role> byRoleName = roleRepository.findByRoleName(userDto.getRoleName());
+        if (byRoleName.isEmpty()) {
+             role = new Role();
+        role.setRoleName(userDto.getRoleName());
+        }else {
+             role = byRoleName.get();
+        }
 
+        User user = User.builder().username(userDto.getUserName())
+                .password(userDto.getPassword())
+                .email(userDto.getEmail())
+                .role(role).build();
+
+        roleRepository.save(role);
+         return userRepository.save(user);
+
+    }
 }
