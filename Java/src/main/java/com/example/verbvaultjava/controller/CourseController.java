@@ -4,6 +4,7 @@ import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.dto.CourseDto;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.dto.CourseInfo;
+import com.example.verbvaultjava.model.dto.WordDto;
 import com.example.verbvaultjava.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,13 @@ public class CourseController {
     public ResponseEntity<User> addUserToCourse(@PathVariable Long courseId,@PathVariable Long userId){
         User user = courseService.addUerToCourse(courseId, userId);
         return ResponseEntity.ok(user);
+    }
+    @GetMapping("/{courseId}/words")
+    public ResponseEntity<List<WordDto>>readAllWordsCourse(@PathVariable Long courseId){
+        return ResponseEntity.ok(courseService.readAllWordsFromCourse(courseId));
+    }
+    @GetMapping("/{courseId}/words/random")
+    public ResponseEntity<WordDto>readRandomWord(@PathVariable Long courseId){
+        return ResponseEntity.ok(courseService.readRandomWordFromCourse(courseId));
     }
 }

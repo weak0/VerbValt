@@ -1,10 +1,12 @@
 package com.example.verbvaultjava.service.course;
 
 import com.example.verbvaultjava.model.User;
+import com.example.verbvaultjava.model.course.CourseWord;
 import com.example.verbvaultjava.model.course.UserCourse;
 import com.example.verbvaultjava.model.dto.CourseDto;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.dto.CourseInfo;
+import com.example.verbvaultjava.model.dto.WordDto;
 import com.example.verbvaultjava.repository.CourseRepository;
 import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,5 +68,35 @@ public class CourseServiceImpl implements CourseService{
         userCourse.setProgress(0);
         userCourseRepository.save(userCourse);
         return user;
+    }
+
+    @Override
+    public List<WordDto> readAllWordsFromCourse(Long courseId) {
+        Course courseFromDb = getCourseFromDb(courseId);
+        return courseFromDb.getCourseWords().stream()
+                .map(w -> {
+                    WordDto wordDto = WordDto.builder()
+                            .foreignWord(w.getForeignWord())
+                            .translation(w.getTranslation())
+                            .build();
+                    return wordDto;
+                }).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public WordDto readRandomWordFromCourse(Long courseId) {
+
+        Course courseFromDb = getCourseFromDb(courseId);
+        List<CourseWord> courseWords = courseFromDb.getCourseWords();
+        if (courseWords.isEmpty()){
+            throw new IllegalArgumentException("Course with given id do not have any word !");
+        }
+        Random rnd = new Random();
+        int randomIndex = rnd.nextInt(courseWords.size());
+        return WordDto.builder()
+                .foreignWord(courseWords.get(randomIndex).getForeignWord())
+                .translation(courseWords.get(randomIndex).getTranslation())
+                .build();
     }
 }
