@@ -6,6 +6,7 @@ import com.example.verbvaultjava.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,5 +25,9 @@ public class CourseServiceImpl implements CourseService{
             course= byCourseLevelIgnoreCase.get();
         }
         return courseRepository.save(course);
+    }
+    @Override
+    public List<Course> readAllCourses(){
+        return courseRepository.findAll();
     }
 }

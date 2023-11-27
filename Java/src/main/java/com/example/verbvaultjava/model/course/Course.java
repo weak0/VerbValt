@@ -1,6 +1,7 @@
 package com.example.verbvaultjava.model.course;
 
 import com.example.verbvaultjava.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,8 +21,12 @@ public class Course {
 
     @ManyToMany(mappedBy = "courses")
     private List<User> users = new ArrayList<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "course")
     private List<CourseSentence> courseSentences = new ArrayList<>();
+
+    @JsonIgnore
     @OneToMany(mappedBy = "course")
     private List<CourseWord> courseWords = new ArrayList<>();
 
