@@ -1,4 +1,4 @@
-package com.example.verbvaultjava.model;
+package com.example.verbvaultjava.model.dto;
 
 import lombok.Data;
 
