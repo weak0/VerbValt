@@ -3,6 +3,7 @@ package com.example.verbvaultjava.service.user;
 
 import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
+import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.dto.UserDto;
 import com.example.verbvaultjava.model.dto.UserResponse;
 import com.example.verbvaultjava.model.dto.WordDto;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
             UserResponse userResponse = UserResponse.builder()
                     .email(user.getEmail())
                     .username(user.getUsername())
+                    .id(user.getId())
+                    .courses(user.getCourses().stream()
+                            .map(Course::getCourseLevel).collect(Collectors.toList()))
                     .wordDto(user.getWords().stream()
                             .map(world -> {
                                 WordDto worldDto = WordDto.builder()

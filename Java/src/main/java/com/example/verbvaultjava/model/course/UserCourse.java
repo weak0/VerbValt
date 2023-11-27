@@ -1,6 +1,7 @@
 package com.example.verbvaultjava.model.course;
 
 import com.example.verbvaultjava.model.User;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,5 +18,6 @@ public class UserCourse {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
     private int progress;
 }

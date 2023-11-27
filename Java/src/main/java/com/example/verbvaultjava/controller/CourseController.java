@@ -1,5 +1,6 @@
 package com.example.verbvaultjava.controller;
 
+import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.dto.CourseDto;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.dto.CourseInfo;
@@ -28,5 +29,10 @@ public class CourseController {
     @GetMapping("/{courseId}")
     public ResponseEntity<CourseInfo>readCourseInfo(@PathVariable Long courseId){
         return ResponseEntity.ok(courseService.getCourseInfo(courseId));
+    }
+    @PostMapping("/{courseId}/users/{userId}")
+    public ResponseEntity<User> addUserToCourse(@PathVariable Long courseId,@PathVariable Long userId){
+        User user = courseService.addUerToCourse(courseId, userId);
+        return ResponseEntity.ok(user);
     }
 }
