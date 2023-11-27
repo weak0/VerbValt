@@ -1,7 +1,8 @@
 package com.example.verbvaultjava.service.course;
 
-import com.example.verbvaultjava.model.CourseDto;
+import com.example.verbvaultjava.model.dto.CourseDto;
 import com.example.verbvaultjava.model.course.Course;
+import com.example.verbvaultjava.model.dto.CourseInfo;
 import com.example.verbvaultjava.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,15 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public List<Course> readAllCourses(){
         return courseRepository.findAll();
+    }
+
+    @Override
+    public CourseInfo getCourseInfo(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new IllegalArgumentException("User id not found"));
+        CourseInfo courseInfo = CourseInfo.builder()
+                .courseSentences(course.getCourseSentences())
+                .courseWords(course.getCourseWords())
+                .build();
+        return courseInfo;
     }
 }

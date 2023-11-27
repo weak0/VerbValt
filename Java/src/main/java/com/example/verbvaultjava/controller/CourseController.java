@@ -1,7 +1,8 @@
 package com.example.verbvaultjava.controller;
 
-import com.example.verbvaultjava.model.CourseDto;
+import com.example.verbvaultjava.model.dto.CourseDto;
 import com.example.verbvaultjava.model.course.Course;
+import com.example.verbvaultjava.model.dto.CourseInfo;
 import com.example.verbvaultjava.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +24,9 @@ public class CourseController {
     public ResponseEntity<Course>createCourse(@RequestBody CourseDto courseDto){
         Course course = courseService.createCourse(courseDto);
         return ResponseEntity.created(URI.create("/"+course.getId())).build();
+    }
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseInfo>readCourseInfo(@PathVariable Long courseId){
+        return ResponseEntity.ok(courseService.getCourseInfo(courseId));
     }
 }
