@@ -8,6 +8,7 @@ import com.example.verbvaultjava.model.dto.UserDto;
 import com.example.verbvaultjava.model.dto.UserResponse;
 import com.example.verbvaultjava.model.dto.WordDto;
 import com.example.verbvaultjava.repository.RoleRepository;
+import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
 import com.example.verbvaultjava.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +25,23 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserCourseRepository userCourseRepository;
 
     public List<UserResponse> getUsersResponse() {
         List<User> all = userRepository.findAll();
         List<UserResponse> responses = new ArrayList<>();
-
+        int progress;
         for (User user : all) {
+            if (userCourseRepository.findUserCourseByUserId(user.getId()).isPresent()){
+                 progress = userCourseRepository.findUserCourseByUserId(user.getId()).get().getProgress();
+            }else {
+                progress = 0;
+            }
             UserResponse userResponse = UserResponse.builder()
                     .email(user.getEmail())
                     .username(user.getUsername())
                     .id(user.getId())
+                    .progress(progress)
                     .courses(user.getCourses().stream()
                             .map(Course::getCourseLevel).collect(Collectors.toList()))
                     .wordDto(user.getWords().stream()

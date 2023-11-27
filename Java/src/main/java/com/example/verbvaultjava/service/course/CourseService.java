@@ -15,4 +15,6 @@ public interface CourseService {
     User addUerToCourse(Long courseId,Long userId);
     List<WordDto> readAllWordsFromCourse(Long courseId);
     WordDto readRandomWordFromCourse(Long courseId);
+
+    String validForeignWord(String word, String translate, Long courseId, Long userId);
 }

@@ -7,6 +7,7 @@ import com.example.verbvaultjava.model.dto.CourseInfo;
 import com.example.verbvaultjava.model.dto.WordDto;
 import com.example.verbvaultjava.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,10 @@ public class CourseController {
     @GetMapping("/{courseId}/words/random")
     public ResponseEntity<WordDto>readRandomWord(@PathVariable Long courseId){
         return ResponseEntity.ok(courseService.readRandomWordFromCourse(courseId));
+    }
+    @PostMapping("/{courseId}/words/users/{userId}")
+    public ResponseEntity<?>validForeignWord(@RequestParam(name = "word")String word,@RequestBody String translate,@PathVariable Long courseId,@PathVariable Long userId){
+        String status=courseService.validForeignWord(word,translate,courseId,userId);
+        return ResponseEntity.ok(new JSONObject().put("status",status).toMap());
     }
 }

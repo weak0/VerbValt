@@ -13,4 +13,5 @@ public class UserResponse {
     private String email;
     private Set<WordDto> wordDto;
     private List<String>courses;
+    private int progress;
 }
