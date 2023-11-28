@@ -65,6 +65,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<WordDto> getUsersWord(Long userId) {
+        User userFromDb = getUserFromDb(userId);
+        List<Word> words = userFromDb.getWords();
+        if (words.isEmpty()){
+            throw new IllegalArgumentException("User have no words !");
+        }
+        return words.stream()
+                .map(word -> WordDto.builder()
+                        .foreignWord(word.getForeignWord())
+                        .translation(word.getTranslation()).build()).toList();
+    }
+
+    @Override
     public User createUser(UserDto userDto) {
         Role role;
         Optional<Role> byRoleName = roleRepository.findByRoleName(userDto.getRoleName());

@@ -12,4 +12,6 @@ public interface UserService {
     User createUser(UserDto userDto);
     WordDto addWordToUser(Long userId,WordDto wordDto);
     List<User> getUsers();
+
+    List<WordDto> getUsersWord(Long userId);
 }
