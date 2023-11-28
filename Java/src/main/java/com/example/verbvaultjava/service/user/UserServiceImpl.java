@@ -5,6 +5,7 @@ import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.Word;
 import com.example.verbvaultjava.model.course.Course;
+import com.example.verbvaultjava.model.course.UserCourse;
 import com.example.verbvaultjava.model.dto.UserDto;
 import com.example.verbvaultjava.model.dto.UserResponse;
 import com.example.verbvaultjava.model.dto.WordDto;
@@ -28,35 +29,39 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserCourseRepository userCourseRepository;
 
-    public List<UserResponse> getUsersResponse() {
-        List<User> all = userRepository.findAll();
-        List<UserResponse> responses = new ArrayList<>();
-        int progress;
-        for (User user : all) {
-            if (userCourseRepository.findUserCourseByUserId(user.getId()).isPresent()) {
-                progress = userCourseRepository.findUserCourseByUserId(user.getId()).get().getProgress();
-            } else {
-                progress = 0;
-            }
-            UserResponse userResponse = UserResponse.builder()
-                    .email(user.getEmail())
-                    .username(user.getUsername())
-                    .id(user.getId())
-                    .progress(progress)
-                    .courses(user.getCourses().stream()
-                            .map(Course::getCourseLevel).collect(Collectors.toList()))
-                    .wordDto(user.getWords().stream()
-                            .map(world -> {
-                                WordDto worldDto = WordDto.builder()
-                                        .foreignWord(world.getForeignWord())
-                                        .translation(world.getTranslation())
-                                        .build();
-                                return worldDto;
-                            }).collect(Collectors.toSet()))
-                    .build();
-            responses.add(userResponse);
+    @Override
+    public UserResponse getUsersResponse(Long userId) {
+        User userFromDb = getUserFromDb(userId);
+        UserResponse userResponse = UserResponse.builder()
+                .username(userFromDb.getUsername())
+                .email(userFromDb.getEmail())
+                .roleName(userFromDb.getRole().getRoleName())
+                .build();
+        List<UserCourse> userCourses = userCourseRepository.findByUserId(userId);
+        if (userCourses.isEmpty()) {
+            return userResponse;
+        } else {
+            List<Course> courses = userFromDb.getCourses();
+            userResponse.setCourses(courses.stream()
+                    .map(course -> {
+                        Optional<UserCourse> userCourseOptional = userCourses.stream()
+                                .filter(uc -> uc.getCourse().equals(course))
+                                .findFirst();
+
+                        return course.getCourseLevel() +
+                                " progress = " +
+                                userCourseOptional.map(UserCourse::getProgress).orElse(0); // domyślnie 0, można dostosować
+                    })
+                    .toList());
         }
-        return responses;
+
+
+        return userResponse;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -80,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public WordDto addWordToUser(Long userId, WordDto wordDto) {
-        User userFromDb = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User with given id do not exists !"));
+        User userFromDb = getUserFromDb(userId);
         List<Word> words = userFromDb.getWords();
         boolean isExistsAlready = words.stream()
                 .anyMatch(w -> w.getForeignWord().equals(wordDto.getForeignWord()));
@@ -95,5 +100,9 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(userFromDb);
         return wordDto;
+    }
+
+    private User getUserFromDb(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User with given id do not exists !"));
     }
 }

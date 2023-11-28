@@ -8,7 +8,8 @@ import com.example.verbvaultjava.model.dto.WordDto;
 import java.util.List;
 
 public interface UserService {
-    List<UserResponse> getUsersResponse();
+    UserResponse getUsersResponse(Long userId);
     User createUser(UserDto userDto);
     WordDto addWordToUser(Long userId,WordDto wordDto);
+    List<User> getUsers();
 }
