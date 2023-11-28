@@ -1,42 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
-import Form from './Form'
+import HomePage from './Home/HomePage';
+import { testuser } from './user'
+
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [isLogged, setIsLogged] = useState(false)
+
+  localStorage.setItem('user', testuser);
+  const user = localStorage.getItem('user');
 
   return (
     <>
-
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+{     !user ? <div className="landingpage">
+        <div className='landingpage-description'>
+            <h1>VerbVault</h1>
+            <h2>Learn English Verbs</h2>
+            <p>VerbVault is a simple app to help you learn English verbs.</p>
+            <p>The app is under development so please be patient... </p>
+            <button>Get Started</button>
+        </div>
+      <div className='landingpage-actions'>
+        <button>Sign In</button>
+        <button>Sign Up</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <div>
-        <button onClick={() => setIsLogged(true)}>zaloguj</button>
-      </div>
-      <div> 
-      { isLogged ? <div>jestes gupi</div> : <Form />}
-      </div>
+      </div> : <HomePage />}
     </>
   )
 }

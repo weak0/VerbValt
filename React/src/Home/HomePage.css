@@ -1,0 +1,48 @@
+.homepage-sidebar {
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid blueviolet;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+ }
+ .homepage-sidebar-top, .homepage-sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:1rem;
+ }
+ .homepage-sidebar-top {
+    justify-content: flex-start;
+ }
+.homepage-sidebar-bottom {
+    justify-content: flex-end;
+}
+.homepage-sidebar-top img {
+    width: 100%;
+    max-width: 50px;
+    border-radius: 50%;
+    border: 2px solid blueviolet;
+}
+.homepage h1 {
+    font-size: 3rem;
+    color:blueviolet;
+    margin-bottom: 1rem;
+    position: absolute;
+    top:0;
+    left: 6rem;
+  }
+  
+.main {
+    margin-left: 6rem;
+    margin-top: 6rem;
+    margin-right: 1rem;
+}
+
