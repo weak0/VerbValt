@@ -112,10 +112,38 @@ public class CourseServiceImpl implements CourseService {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
         String response;
-        UserCourse userCourse = userCourseRepository.findUserCourseByUserId(userId).orElseThrow(() -> new IllegalArgumentException("User with given id not found !"));
+        UserCourse userCourse = getUserCourse(userId);
         JSONObject jsonObject = new JSONObject(translate);
         translate=jsonObject.getString("translate");
         if (courseWord.getTranslation().equals(translate)) {
+            int progress = userCourse.getProgress();
+            progress++;
+            userCourse.setProgress(progress);
+            response = "Brawo, tak trzymaj";
+        } else {
+            response = "Niestety nie udało się, sprobuj ponownie";
+        }
+        userCourseRepository.save(userCourse);
+        return response;
+    }
+
+    private UserCourse getUserCourse(Long userId) {
+        return userCourseRepository.findUserCourseByUserId(userId).orElseThrow(() -> new IllegalArgumentException("User with given id not found !"));
+    }
+
+    @Override
+    public String validTranslateWord(String word, String foreignWord, Long courseId, Long userId) {
+        Course courseFromDb = getCourseFromDb(courseId);
+        CourseWord courseWord = courseFromDb.getCourseWords()
+                .stream()
+                .filter(w -> w.getTranslation().equals(word))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Given word do not exists in that course"));
+        String response;
+        UserCourse userCourse = getUserCourse(userId);
+        JSONObject jsonObject = new JSONObject(foreignWord);
+        foreignWord = jsonObject.getString("foreignWord");
+        if (courseWord.getForeignWord().equals(foreignWord)){
             int progress = userCourse.getProgress();
             progress++;
             userCourse.setProgress(progress);

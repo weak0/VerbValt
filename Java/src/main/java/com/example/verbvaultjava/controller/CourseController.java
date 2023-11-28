@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/courses")
@@ -45,9 +47,14 @@ public class CourseController {
     public ResponseEntity<WordDto>readRandomWord(@PathVariable Long courseId){
         return ResponseEntity.ok(courseService.readRandomWordFromCourse(courseId));
     }
-    @PostMapping("/{courseId}/words/users/{userId}")
-    public ResponseEntity<?>validForeignWord(@RequestParam(name = "word")String word,@RequestBody String translate,@PathVariable Long courseId,@PathVariable Long userId){
+    @PostMapping("/{courseId}/words/users/{userId}/translate")
+    public ResponseEntity<Map<String, Object>>validForeignWord(@RequestParam(name = "word")String word, @RequestBody String translate, @PathVariable Long courseId, @PathVariable Long userId){
         String status=courseService.validForeignWord(word,translate,courseId,userId);
+        return ResponseEntity.ok(new JSONObject().put("status",status).toMap());
+    }
+    @PostMapping("/{courseId}/words/users/{userId}/foreign")
+    public ResponseEntity<Map<String, Object>>validTranslateWord(@RequestParam(name = "word")String word, @RequestBody String foreignWord, @PathVariable Long courseId, @PathVariable Long userId){
+        String status=courseService.validTranslateWord(word,foreignWord,courseId,userId);
         return ResponseEntity.ok(new JSONObject().put("status",status).toMap());
     }
 }

@@ -17,4 +17,5 @@ public interface CourseService {
     WordDto readRandomWordFromCourse(Long courseId);
 
     String validForeignWord(String word, String translate, Long courseId, Long userId);
+    String validTranslateWord(String word, String translate, Long courseId, Long userId);
 }
