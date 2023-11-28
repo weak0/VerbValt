@@ -3,6 +3,7 @@ package com.example.verbvaultjava.service.user;
 
 import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
+import com.example.verbvaultjava.model.Word;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.dto.UserDto;
 import com.example.verbvaultjava.model.dto.UserResponse;
@@ -32,9 +33,9 @@ public class UserServiceImpl implements UserService {
         List<UserResponse> responses = new ArrayList<>();
         int progress;
         for (User user : all) {
-            if (userCourseRepository.findUserCourseByUserId(user.getId()).isPresent()){
-                 progress = userCourseRepository.findUserCourseByUserId(user.getId()).get().getProgress();
-            }else {
+            if (userCourseRepository.findUserCourseByUserId(user.getId()).isPresent()) {
+                progress = userCourseRepository.findUserCourseByUserId(user.getId()).get().getProgress();
+            } else {
                 progress = 0;
             }
             UserResponse userResponse = UserResponse.builder()
@@ -63,19 +64,36 @@ public class UserServiceImpl implements UserService {
         Role role;
         Optional<Role> byRoleName = roleRepository.findByRoleName(userDto.getRoleName());
         if (byRoleName.isEmpty()) {
-             role = new Role();
-        role.setRoleName(userDto.getRoleName());
-        }else {
-             role = byRoleName.get();
+            role = new Role();
+            role.setRoleName(userDto.getRoleName());
+        } else {
+            role = byRoleName.get();
         }
-
         User user = User.builder().username(userDto.getUserName())
                 .password(userDto.getPassword())
                 .email(userDto.getEmail())
                 .role(role).build();
 
         roleRepository.save(role);
-         return userRepository.save(user);
+        return userRepository.save(user);
+    }
 
+    @Override
+    public WordDto addWordToUser(Long userId, WordDto wordDto) {
+        User userFromDb = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User with given id do not exists !"));
+        List<Word> words = userFromDb.getWords();
+        boolean isExistsAlready = words.stream()
+                .anyMatch(w -> w.getForeignWord().equals(wordDto.getForeignWord()));
+        if (!isExistsAlready) {
+            words.add(Word.builder()
+                    .foreignWord(wordDto.getForeignWord())
+                    .translation(wordDto.getTranslation())
+                    .user(userFromDb)
+                    .build());
+        } else {
+            throw new IllegalArgumentException("Given word already exists !");
+        }
+        userRepository.save(userFromDb);
+        return wordDto;
     }
 }

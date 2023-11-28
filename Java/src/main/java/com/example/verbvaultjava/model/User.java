@@ -33,7 +33,7 @@ public class User {
     private Role role;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Word> words= new ArrayList<>();
 
    @ManyToMany
