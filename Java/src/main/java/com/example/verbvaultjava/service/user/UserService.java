@@ -17,4 +17,7 @@ public interface UserService {
 
     WordDto getRandomWord(Long userId);
 
-}
+    String validForeignWord(String word, String translate, Long userId);
+
+    String validTranslateWord(String word, String foreignWord, Long userId);
+    }
