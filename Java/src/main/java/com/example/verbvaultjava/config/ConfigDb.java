@@ -1,4 +1,4 @@
-package com.example.verbvaultjava;
+package com.example.verbvaultjava.config;
 
 import com.example.verbvaultjava.service.DataLoadingService;
 import lombok.Getter;
