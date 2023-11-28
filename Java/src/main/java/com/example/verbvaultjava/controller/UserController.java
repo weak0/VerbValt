@@ -30,6 +30,10 @@ public class UserController {
     public ResponseEntity<List<WordDto>>getUsersWord(@PathVariable Long userId){
         return ResponseEntity.ok(userService.getUsersWord(userId));
     }
+    @GetMapping("{userId}/words/random")
+    public ResponseEntity<WordDto>getRandomWord(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.getRandomWord(userId));
+    }
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody UserDto userDto) {
         User user = userService.createUser(userDto);

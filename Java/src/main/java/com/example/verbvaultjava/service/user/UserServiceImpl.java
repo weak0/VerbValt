@@ -12,14 +12,12 @@ import com.example.verbvaultjava.model.dto.WordDto;
 import com.example.verbvaultjava.repository.RoleRepository;
 import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
-import com.example.verbvaultjava.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 
 @Service
@@ -68,13 +66,17 @@ public class UserServiceImpl implements UserService {
     public List<WordDto> getUsersWord(Long userId) {
         User userFromDb = getUserFromDb(userId);
         List<Word> words = userFromDb.getWords();
-        if (words.isEmpty()){
-            throw new IllegalArgumentException("User have no words !");
-        }
+        validUserWords(words);
         return words.stream()
                 .map(word -> WordDto.builder()
                         .foreignWord(word.getForeignWord())
                         .translation(word.getTranslation()).build()).toList();
+    }
+
+    private  void validUserWords(List<Word> words) {
+        if (words.isEmpty()){
+            throw new IllegalArgumentException("User have no words !");
+        }
     }
 
     @Override
@@ -94,6 +96,19 @@ public class UserServiceImpl implements UserService {
 
         roleRepository.save(role);
         return userRepository.save(user);
+    }
+
+    @Override
+    public WordDto getRandomWord(Long userId) {
+        User userFromDb = getUserFromDb(userId);
+        validUserWords(userFromDb.getWords());
+        Random random= new Random();
+        int index = random.nextInt(userFromDb.getWords().size());
+        Word word = userFromDb.getWords().get(index);
+        return WordDto.builder()
+                .translation(word.getTranslation())
+                .foreignWord(word.getForeignWord())
+                .build();
     }
 
     @Override

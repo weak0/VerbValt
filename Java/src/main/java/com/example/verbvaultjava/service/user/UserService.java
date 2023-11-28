@@ -14,4 +14,7 @@ public interface UserService {
     List<User> getUsers();
 
     List<WordDto> getUsersWord(Long userId);
+
+    WordDto getRandomWord(Long userId);
+
 }
