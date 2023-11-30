@@ -151,7 +151,7 @@ public class CourseServiceImpl implements CourseService {
             userCourse.setProgress(progress);
             response = "Brawo, tak trzymaj";
         } else {
-            response = "Niestety nie udało się, sprobuj ponownie";
+            response = "Niestety nie udało się, spróbuj ponownie !";
         }
         userCourseRepository.save(userCourse);
         return response;
