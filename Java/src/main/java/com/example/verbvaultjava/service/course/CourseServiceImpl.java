@@ -114,7 +114,7 @@ public class CourseServiceImpl implements CourseService {
         String response;
         UserCourse userCourse = getUserCourse(userId);
         JSONObject jsonObject = new JSONObject(translate);
-        translate=jsonObject.getString("translate");
+        translate = jsonObject.getString("translate");
         if (courseWord.getTranslation().equals(translate)) {
             int progress = userCourse.getProgress();
             progress++;
@@ -143,9 +143,11 @@ public class CourseServiceImpl implements CourseService {
         UserCourse userCourse = getUserCourse(userId);
         JSONObject jsonObject = new JSONObject(foreignWord);
         foreignWord = jsonObject.getString("foreignWord");
-        if (courseWord.getForeignWord().equals(foreignWord)){
+        if (courseWord.getForeignWord().equals(foreignWord)) {
             int progress = userCourse.getProgress();
-            progress++;
+            if (progress < 80) {
+                progress++;
+            }
             userCourse.setProgress(progress);
             response = "Brawo, tak trzymaj";
         } else {
