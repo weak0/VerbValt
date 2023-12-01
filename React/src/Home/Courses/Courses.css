@@ -1,0 +1,29 @@
+.courses {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+    
+}
+.course-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 0.1px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+.courses-image {
+    position:relative;
+}
+.courses-description {
+    text-align: center;
+    background-color: blueviolet;
+    margin: 0;
+    padding: 1rem;
+}
+.courses-actions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem 0.5rem;
+}

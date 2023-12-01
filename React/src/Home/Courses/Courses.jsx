@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import './Courses.css'
+import CourseDetails from './CourseDetails'
+import { isEmpty } from '../../utils'
 
 const Courses = () => {
 
 
     const [courses, setCourses] = useState([])
+    const [courseDetails, setCourseDetails] = useState({})
 
-   const getCourses = async () => {
+    const getCourses = async () => {
         const response = await fetch('http://localhost:8000/courses')
         const data = await response.json()
         if (response.status !== 200) {
@@ -14,23 +18,43 @@ const Courses = () => {
         setCourses(data)
 
     }
-        
-   useEffect(() => {
-        getCourses()
-    }, []) 
 
-  return (
-    <div>
-        <h2>Courses</h2>
-        {courses.map(course => {
-            return (
-                <div key={course.id}>
-                    <h3>{course.courseLevel}</h3>
-                </div>
-            )
-        })}
-    </div>
-  )
+    const getCourseDetails = async (id) => {
+        const response = await fetch(`http://localhost:8000/courses/${id}`)
+        const data = await response.json()
+        if (response.status !== 200) {
+            alert(data.message)
+        }
+        setCourseDetails(data)
+
+    }
+
+    useEffect(() => {
+        getCourses()
+    }, [])
+
+    return (
+        <>
+            <h2 className='section-tittle'>Courses</h2>
+            <div className='courses' >
+                {courses.map(course => {
+                    return (
+                        <div key={course.id} className='course-container'>
+                                <h3 className='courses-description'>{course.courseLevel}</h3>
+                            <div className='courses-image'>
+                                <img src="https://via.placeholder.com/300x200/333" alt="course" />
+                            </div>
+                            <div className='courses-actions'>
+                                <button>Start</button>
+                                <button onClick={() => getCourseDetails(course.id)}>Details</button>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+            {!isEmpty(courseDetails) && <CourseDetails courseDetails={courseDetails} />}
+            </>
+    )
 }
 
 export default Courses
