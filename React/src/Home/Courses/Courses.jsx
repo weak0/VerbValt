@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './Courses.css'
 import CourseDetails from './CourseDetails'
 import { isEmpty } from '../../utils'
+import { testuser } from '../../user'
+
+const userId = testuser.id
 
 const Courses = () => {
 
@@ -29,6 +32,17 @@ const Courses = () => {
 
     }
 
+    const startCourse = async (courseId) => {
+        const response = await fetch(`http://localhost:8000/courses/${courseId}/users/${userId}`,
+        {method: 'POST'})
+        const data = await response.json()
+        if (response.status !== 200) {
+            alert(data.message)
+        }else {
+            console.log(data);
+        }
+    }
+
     useEffect(() => {
         getCourses()
     }, [])
@@ -45,7 +59,7 @@ const Courses = () => {
                                 <img src="https://via.placeholder.com/300x200/333" alt="course" />
                             </div>
                             <div className='courses-actions'>
-                                <button>Start</button>
+                                <button onClick = {() => startCourse(course.id)}>Start</button>
                                 <button onClick={() => getCourseDetails(course.id)}>Details</button>
                             </div>
                         </div>
