@@ -38,9 +38,8 @@ const Courses = () => {
         const data = await response.json()
         if (response.status !== 200) {
             alert(data.message)
-        }else {
-            console.log(data);
         }
+        getCourses()
     }
 
     useEffect(() => {
@@ -59,7 +58,9 @@ const Courses = () => {
                                 <img src="https://via.placeholder.com/300x200/333" alt="course" />
                             </div>
                             <div className='courses-actions'>
-                                <button onClick = {() => startCourse(course.id)}>Start</button>
+                                {course.users.some( user => user.id  === userId) 
+                                ? <button> Learn</button> 
+                                : <button onClick = {() => startCourse(course.id)}>Start</button>}
                                 <button onClick={() => getCourseDetails(course.id)}>Details</button>
                             </div>
                         </div>
