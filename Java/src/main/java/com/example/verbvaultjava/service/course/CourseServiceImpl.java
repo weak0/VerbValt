@@ -64,7 +64,7 @@ public class CourseServiceImpl implements CourseService {
     public User addUerToCourse(Long courseId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User id not found !"));
         Course courseFromDb = getCourseFromDb(courseId);
-
+        validUserCourse(userId,courseFromDb);
         UserCourse userCourse = new UserCourse();
         userCourse.setUser(user);
         userCourse.setCourse(courseFromDb);
@@ -155,5 +155,12 @@ public class CourseServiceImpl implements CourseService {
         }
         userCourseRepository.save(userCourse);
         return response;
+    }
+    private void validUserCourse(Long userId, Course course) {
+        boolean isInCourse = course.getUsers().stream()
+                .anyMatch(u -> u.getId().equals(userId));
+        if (isInCourse){
+            throw new IllegalArgumentException("User with given id is already in this course !");
+        }
     }
 }
