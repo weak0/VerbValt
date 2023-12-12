@@ -1,5 +1,9 @@
 package com.example.verbvaultjava.controller;
 
+import com.example.verbvaultjava.auth.AuthenticationRequest;
+import com.example.verbvaultjava.auth.AuthenticationResponse;
+import com.example.verbvaultjava.auth.AuthenticationService;
+import com.example.verbvaultjava.auth.RegisterRequest;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.dto.UserDto;
 import com.example.verbvaultjava.model.dto.UserResponse;
@@ -19,6 +23,7 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final AuthenticationService authService;
 
     @GetMapping
     public ResponseEntity<List<User>> getUsersWithWorlds() {
@@ -52,10 +57,13 @@ public class UserController {
         return ResponseEntity.ok(new JSONObject().put("status", status).toMap());
     }
 
-    @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody UserDto userDto) {
-        User user = userService.createUser(userDto);
-        return ResponseEntity.created(URI.create("/" + user.getId())).build();
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> createUser(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
+    }
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
     @PostMapping("/{userId}/addWord")

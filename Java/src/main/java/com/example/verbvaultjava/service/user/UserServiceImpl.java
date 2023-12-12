@@ -81,25 +81,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserDto userDto) {
-        Role role;
-        Optional<Role> byRoleName = roleRepository.findByRoleName(userDto.getRoleName());
-        if (byRoleName.isEmpty()) {
-            role = new Role();
-            role.setRoleName(userDto.getRoleName());
-        } else {
-            role = byRoleName.get();
-        }
-        User user = User.builder().username(userDto.getUserName())
-                .password(userDto.getPassword())
-                .email(userDto.getEmail())
-                .role(role).build();
-
-        roleRepository.save(role);
-        return userRepository.save(user);
-    }
-
-    @Override
     public WordDto getRandomWord(Long userId) {
         User userFromDb = getUserFromDb(userId);
         validUserWords(userFromDb.getWords());
