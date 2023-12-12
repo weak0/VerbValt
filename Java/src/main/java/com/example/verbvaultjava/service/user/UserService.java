@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface UserService {
     UserResponse getUsersResponse(Long userId);
-    User createUser(UserDto userDto);
     WordDto addWordToUser(Long userId,WordDto wordDto);
     List<User> getUsers();
 
