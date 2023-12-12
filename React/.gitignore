@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.idea/
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +23,25 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+C#/VerbVaultCSharp/bin/Debug/net7.0/VerbVaultCSharp.dll
+C#/VerbVaultCSharp/bin/Debug/net7.0/VerbVaultCSharp.dll
+C#/VerbVaultCSharp/bin/Debug/net7.0/VerbVaultCSharp.exe
+C#/VerbVaultCSharp/obj/project.assets.json
+C#/VerbVaultCSharp/obj/project.nuget.cache
+C#/VerbVaultCSharp/obj/project.packagespec.json
+C#/VerbVaultCSharp/obj/rider.project.model.nuget.info
+C#/VerbVaultCSharp/obj/rider.project.restore.info
+C#/VerbVaultCSharp/obj/VerbVaultCSharp.csproj.nuget.g.props
+C#/VerbVaultCSharp/obj/Debug/net7.0/VerbVaultCSharp.AssemblyInfo.cs
+C#/VerbVaultCSharp/obj/Debug/net7.0/VerbVaultCSharp.assets.cache
+C#/VerbVaultCSharp/obj/Debug/net7.0/VerbVaultCSharp.assets.cache
+C#/VerbVaultCSharp/obj/Debug/net7.0/VerbVaultCSharp.csproj.AssemblyReference.cache
+C#/VerbVaultCSharp/obj/Debug/net7.0/VerbVaultCSharp.GeneratedMSBuildEditorConfig.editorconfig
+React/.eslintrc.cjs
+C#/VerbVaultCSharp/bin/Debug/net7.0/VerbVaultCSharp.dll
+C#/VerbVaultCSharp/bin/Debug/net7.0/VerbVaultCSharp.exe
+C#/VerbVaultCSharp/obj/project.assets.json
+C#/VerbVaultCSharp/obj/project.nuget.cache
+C#/VerbVaultCSharp/obj/Debug/net7.0/VerbVaultCSharp.AssemblyInfoInputs.cache
+C#/VerbVaultCSharp/bin/Debug/net7.0/VerbVaultCSharp.dll
+C#/VerbVaultCSharp/bin/Debug/net7.0/VerbVaultCSharp.dll
