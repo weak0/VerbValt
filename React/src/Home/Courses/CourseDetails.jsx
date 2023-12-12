@@ -3,7 +3,6 @@ import './Courses.css'
 
 const CourseDetails = ({courseDetails}) => {
     const { courseSentences, courseWords} = courseDetails
-    console.log(courseSentences, courseWords)
   return (
    <>
     <h2 className='section-tittle '>Courses Details</h2>
