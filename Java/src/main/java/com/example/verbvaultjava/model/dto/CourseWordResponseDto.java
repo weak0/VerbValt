@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class WordDto {
+public class CourseWordResponseDto {
     private Long wordId;
-    private String foreignWord;
-    private String translation;
+    private String status;
 }
