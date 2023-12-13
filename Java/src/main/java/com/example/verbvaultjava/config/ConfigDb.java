@@ -18,12 +18,11 @@ public class ConfigDb implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Path csv = Paths.get(System.getProperty("user.dir"))
-                .resolve("CSV");
-        dataLoadingService.loadSentences(csv.toAbsolutePath() + "\\zdania A1.csv", "a1");
-        dataLoadingService.loadWords(csv.toAbsolutePath() + "\\słowka A1.csv", "a1");
-        dataLoadingService.loadSentences(csv.toAbsolutePath() + "\\zdania B2.csv", "b2");
-        dataLoadingService.loadWords(csv.toAbsolutePath() + "\\slowka B2.csv", "b2");
+        String csv = System.getProperty("user.dir")+"\\Java\\CSV";
+        dataLoadingService.loadSentences(csv + "\\zdania A1.csv", "a1");
+        dataLoadingService.loadWords(csv + "\\słowka A1.csv", "a1");
+        dataLoadingService.loadSentences(csv + "\\zdania B2.csv", "b2");
+        dataLoadingService.loadWords(csv + "\\slowka B2.csv", "b2");
 
     }
 }
