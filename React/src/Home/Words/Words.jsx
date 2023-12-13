@@ -3,6 +3,7 @@ import { fetchData } from '../../user'
 import './Words.css'
 import { IoMdArrowBack } from "react-icons/io";
 import { testuser } from '../../user'
+import { learnTypeEnum } from '../../utils';
 
 
 const pageEnum = {
@@ -11,7 +12,8 @@ const pageEnum = {
   editWords: 3
 }
 
-const Words = () => {
+const Words = (props) => {
+  const { setupLearn } = props
   const [page, setPage] = React.useState(pageEnum.default);
   const [foreignWord, setForeignWord] = React.useState("");
   const [translation, setTranslation] = React.useState("");
@@ -27,7 +29,7 @@ const Words = () => {
       <h2 className='section-tittle'>Words</h2>
       {page === pageEnum.default && 
       <div className='dialog-box'>
-        <button className='dialog-box-button'>Learn words</button>
+        <button className='dialog-box-button' onClick={() => setupLearn(0, learnTypeEnum.Words)}>Learn words</button>
         <button className='dialog-box-button' onClick={() => setPage(pageEnum.addWords)}>Add words</button>
         <button className='dialog-box-button' onClick={() => setPage(pageEnum.editWords)}>Edit words</button>
       </div >}

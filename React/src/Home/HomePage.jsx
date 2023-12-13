@@ -45,7 +45,7 @@ const HomePage = () => {
       <h1>VerbVault</h1>
       <div className='main'>
         {page == pageEnum.Courses && <Courses setupLearn={(id, learnType) => setupLearn(id, learnType )} />}
-        {page == pageEnum.Words && <Words />}
+        {page == pageEnum.Words && <Words setupLearn={(id, learnType) => setupLearn(id, learnType )} />}
         {page == pageEnum.Learn && (currentCourse ? <Learn learnTypeProp={currentCourse.learnType} courseId={currentCourse.id} /> :
          <Learn learnTypeProp={learnTypeEnum.Words}  courseId={0} />)}
       </div>
