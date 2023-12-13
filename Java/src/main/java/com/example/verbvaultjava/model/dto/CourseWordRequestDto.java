@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class CourseWordRequestDto {
-    private Long id;
+    private Long userId;
     private String word;
     }

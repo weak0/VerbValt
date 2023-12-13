@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class CourseWordResponseDto {
-    private Long id;
+    private Long wordId;
     private String status;
 }

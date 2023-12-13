@@ -96,6 +96,7 @@ public class CourseServiceImpl implements CourseService {
         Random rnd = new Random();
         int randomIndex = rnd.nextInt(courseWords.size());
         return WordDto.builder()
+                .wordId(courseWords.get(randomIndex).getId())
                 .foreignWord(courseWords.get(randomIndex).getForeignWord())
                 .translation(courseWords.get(randomIndex).getTranslation())
                 .build();
@@ -104,7 +105,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseWordResponseDto validForeignWord(String word, CourseWordRequestDto courseWordDto, Long courseId) {
         String translate = courseWordDto.getWord();
-        Long userId = courseWordDto.getId();
+        Long userId = courseWordDto.getUserId();
         Course courseFromDb = getCourseFromDb(courseId);
         CourseWord courseWord = courseFromDb.getCourseWords()
                 .stream()
@@ -123,7 +124,7 @@ public class CourseServiceImpl implements CourseService {
         }
         userCourseRepository.save(userCourse);
         return  CourseWordResponseDto.builder()
-                .id(courseWord.getId())
+                .wordId(courseWord.getId())
                 .status(response)
                 .build();
     }
@@ -135,7 +136,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseWordResponseDto validTranslateWord(String word, CourseWordRequestDto courseWordDto, Long courseId) {
         Course courseFromDb = getCourseFromDb(courseId);
-        Long userId = courseWordDto.getId();
+        Long userId = courseWordDto.getUserId();
         String foreignWord = courseWordDto.getWord();
         CourseWord courseWord = courseFromDb.getCourseWords()
                 .stream()
@@ -156,7 +157,7 @@ public class CourseServiceImpl implements CourseService {
         }
         userCourseRepository.save(userCourse);
         return  CourseWordResponseDto.builder()
-                .id(courseWord.getId())
+                .wordId(courseWord.getId())
                 .status(response)
                 .build();
     }
