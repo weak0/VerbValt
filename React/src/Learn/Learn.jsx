@@ -1,11 +1,11 @@
 import React from 'react'
 import './Learn.css'
 import { learnTypeEnum } from '../utils'
-import LearnWords from './LearnWords'
+import LearnWords from './LearnWord/LearnWords'
 import LearnSentences from './LearnSentences'
 
 const Learn = (props) => {
-    const {learnTypeProp, courseId } = props
+    const { learnTypeProp, courseId } = props
     const [learnType, setLearnType] = React.useState(learnTypeProp)
     return (
         <div>
@@ -16,11 +16,11 @@ const Learn = (props) => {
             </div>}
             {learnType == learnTypeEnum.Words &&
                 <div className='dialog-box'>
-                    <LearnWords courseId={courseId}/>
+                    <LearnWords courseId={courseId} />
                 </div>}
             {learnType == learnTypeEnum.Sentences &&
                 <div className='dialog-box'>
-                    <LearnSentences courseId={courseId}/>
+                    <LearnSentences courseId={courseId} />
                 </div>}
 
         </div>

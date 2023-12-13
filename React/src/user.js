@@ -1,6 +1,6 @@
 import {jwtDecode} from "jwt-decode";
 
-const testToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWNpZWtAZXhhbXBsZS54ZCIsImp0aSI6IjExIiwiaWF0IjoxNzAyNDEyOTIxLCJleHAiOjE3MDI0OTkzMjF9.KoAEChD_nG_7rnwF66mapWlUkl7ONvT9YSsS9FjYI6c"
+const testToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWNpZWtAZXhhbXBsZS54ZCIsImp0aSI6IjExIiwiaWF0IjoxNzAyNDI3MDE1LCJleHAiOjE3MDI1MTM0MTV9.VQnnvMws4oQ5dzemB9kDC2-CdQC3eOX6adRQ-5bzxac"
 
 const decodeToken = (token) => {
     const decoded = jwtDecode(token);
