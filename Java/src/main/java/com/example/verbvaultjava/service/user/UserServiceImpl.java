@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService {
         int index = random.nextInt(userFromDb.getWords().size());
         Word word = userFromDb.getWords().get(index);
         return WordDto.builder()
+                .wordId(word.getId())
                 .translation(word.getTranslation())
                 .foreignWord(word.getForeignWord())
                 .build();
