@@ -3,10 +3,8 @@ package com.example.verbvaultjava.service.course;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.course.CourseWord;
 import com.example.verbvaultjava.model.course.UserCourse;
-import com.example.verbvaultjava.model.dto.CourseDto;
+import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.model.course.Course;
-import com.example.verbvaultjava.model.dto.CourseInfo;
-import com.example.verbvaultjava.model.dto.WordDto;
 import com.example.verbvaultjava.repository.CourseRepository;
 import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
@@ -64,7 +62,7 @@ public class CourseServiceImpl implements CourseService {
     public User addUerToCourse(Long courseId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User id not found !"));
         Course courseFromDb = getCourseFromDb(courseId);
-        validUserCourse(userId,courseFromDb);
+        validUserCourse(userId, courseFromDb);
         UserCourse userCourse = new UserCourse();
         userCourse.setUser(user);
         userCourse.setCourse(courseFromDb);
@@ -104,7 +102,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public String validForeignWord(String word, String translate, Long courseId, Long userId) {
+    public CourseWordResponseDto validForeignWord(String word, CourseWordRequestDto courseWordDto, Long courseId) {
+        String translate = courseWordDto.getWord();
+        Long userId = courseWordDto.getId();
         Course courseFromDb = getCourseFromDb(courseId);
         CourseWord courseWord = courseFromDb.getCourseWords()
                 .stream()
@@ -113,8 +113,6 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
         String response;
         UserCourse userCourse = getUserCourse(userId);
-        JSONObject jsonObject = new JSONObject(translate);
-        translate = jsonObject.getString("translate");
         if (courseWord.getTranslation().equals(translate)) {
             int progress = userCourse.getProgress();
             progress++;
@@ -124,7 +122,10 @@ public class CourseServiceImpl implements CourseService {
             response = "Niestety nie udało się, sprobuj ponownie";
         }
         userCourseRepository.save(userCourse);
-        return response;
+        return  CourseWordResponseDto.builder()
+                .id(courseWord.getId())
+                .status(response)
+                .build();
     }
 
     private UserCourse getUserCourse(Long userId) {
@@ -132,8 +133,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public String validTranslateWord(String word, String foreignWord, Long courseId, Long userId) {
+    public CourseWordResponseDto validTranslateWord(String word, CourseWordRequestDto courseWordDto, Long courseId) {
         Course courseFromDb = getCourseFromDb(courseId);
+        Long userId = courseWordDto.getId();
+        String foreignWord = courseWordDto.getWord();
         CourseWord courseWord = courseFromDb.getCourseWords()
                 .stream()
                 .filter(w -> w.getTranslation().equals(word))
@@ -141,8 +144,6 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new IllegalArgumentException("Given word do not exists in that course"));
         String response;
         UserCourse userCourse = getUserCourse(userId);
-        JSONObject jsonObject = new JSONObject(foreignWord);
-        foreignWord = jsonObject.getString("foreignWord");
         if (courseWord.getForeignWord().equals(foreignWord)) {
             int progress = userCourse.getProgress();
             if (progress < 80) {
@@ -154,12 +155,16 @@ public class CourseServiceImpl implements CourseService {
             response = "Niestety nie udało się, spróbuj ponownie !";
         }
         userCourseRepository.save(userCourse);
-        return response;
+        return  CourseWordResponseDto.builder()
+                .id(courseWord.getId())
+                .status(response)
+                .build();
     }
+
     private void validUserCourse(Long userId, Course course) {
         boolean isInCourse = course.getUsers().stream()
                 .anyMatch(u -> u.getId().equals(userId));
-        if (isInCourse){
+        if (isInCourse) {
             throw new IllegalArgumentException("User with given id is already in this course !");
         }
     }
