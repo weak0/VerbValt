@@ -66,7 +66,7 @@ public class UserController {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    @PostMapping("/{userId}/addWord")
+    @PostMapping("/{userId}/words")
     public ResponseEntity<WordDto> addWordToUser(@PathVariable Long userId, @RequestBody WordDto wordDto) {
         return ResponseEntity.ok(userService.addWordToUser(userId, wordDto));
     }
