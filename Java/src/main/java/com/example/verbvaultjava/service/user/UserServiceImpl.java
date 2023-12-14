@@ -11,7 +11,6 @@ import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
 import com.example.verbvaultjava.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.example.verbvaultjava.controller;
 
 import com.example.verbvaultjava.model.User;
-import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.model.course.Course;
+import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
