@@ -104,7 +104,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseWordResponseDto validForeignWord(CourseWordRequestDto courseWordDto, Long courseId) {
+    public WordResponseDto validForeignWord(WordRequestDto courseWordDto, Long courseId) {
         String foreignWord = getCourseWord(courseWordDto).getForeignWord();
         Long userId = courseWordDto.getUserId();
         Course courseFromDb = getCourseFromDb(courseId);
@@ -125,14 +125,14 @@ public class CourseServiceImpl implements CourseService {
             response = "Niestety nie udało się, sprobuj ponownie";
         }
         userCourseRepository.save(userCourse);
-        return CourseWordResponseDto.builder()
+        return WordResponseDto.builder()
                 .wordId(courseWord.getId())
                 .status(response)
                 .build();
     }
 
     @Override
-    public CourseWordResponseDto validTranslateWord(CourseWordRequestDto courseWordDto, Long courseId) {
+    public WordResponseDto validTranslateWord(WordRequestDto courseWordDto, Long courseId) {
         Course courseFromDb = getCourseFromDb(courseId);
         Long userId = courseWordDto.getUserId();
         String foreignWord = courseWordDto.getWord();
@@ -156,7 +156,7 @@ public class CourseServiceImpl implements CourseService {
             response = "Niestety nie udało się, spróbuj ponownie !";
         }
         userCourseRepository.save(userCourse);
-        return CourseWordResponseDto.builder()
+        return WordResponseDto.builder()
                 .wordId(courseWord.getId())
                 .status(response)
                 .build();
@@ -170,7 +170,7 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
-    private CourseWord getCourseWord(CourseWordRequestDto courseWordDto) {
+    private CourseWord getCourseWord(WordRequestDto courseWordDto) {
         CourseWord word = courseWordRepository.findById(courseWordDto.getWordId())
                 .orElseThrow(() -> new IllegalArgumentException("Word with given id do not exists !"));
         return word;

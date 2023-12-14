@@ -1,17 +1,15 @@
 package com.example.verbvaultjava.service.user;
 
 
-import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.Word;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.course.UserCourse;
-import com.example.verbvaultjava.model.dto.UserDto;
-import com.example.verbvaultjava.model.dto.UserResponse;
-import com.example.verbvaultjava.model.dto.WordDto;
+import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.repository.RoleRepository;
 import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
+import com.example.verbvaultjava.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserCourseRepository userCourseRepository;
+    private final WordRepository wordRepository;
 
     @Override
     public UserResponse getUsersResponse(Long userId) {
@@ -70,6 +69,7 @@ public class UserServiceImpl implements UserService {
         validUserWords(words);
         return words.stream()
                 .map(word -> WordDto.builder()
+                        .wordId(word.getId())
                         .foreignWord(word.getForeignWord())
                         .translation(word.getTranslation()).build()).toList();
     }
@@ -95,62 +95,73 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String validForeignWord(String word, String translate, Long userId) {
-        User userFromDb = getUserFromDb(userId);
+    public WordResponseDto validForeignWord(WordRequestDto wordRequestDto) {
+        User userFromDb = getUserFromDb(wordRequestDto.getUserId());
+        Word word = getWord(wordRequestDto);
+        String translate = wordRequestDto.getWord().toLowerCase();
         Word userWord = userFromDb.getWords().stream()
-                .filter(w -> w.getForeignWord().equals(word))
+                .filter(w -> w.getForeignWord().equals(word.getForeignWord()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
         String response;
-        JSONObject jsonObject = new JSONObject(translate);
-        translate = jsonObject.getString("translate");
         if (userWord.getTranslation().equals(translate)) {
             response = "Brawo, tak trzymaj";
         } else {
             response = "Niestety nie udało się, sprobuj ponownie";
         }
-        return response;
+        return WordResponseDto.builder()
+                .wordId(userWord.getId())
+                .status(response)
+                .build();
     }
 
     @Override
-    public String validTranslateWord(String word, String foreignWord, Long userId) {
-        User userFromDb = getUserFromDb(userId);
+    public WordResponseDto validTranslateWord(WordRequestDto wordRequestDto) {
+        User userFromDb = getUserFromDb(wordRequestDto.getUserId());
+        Word word = getWord(wordRequestDto);
+        String foreign = wordRequestDto.getWord().toLowerCase();
         Word userWord = userFromDb.getWords().stream()
-                .filter(w -> w.getTranslation().equals(word))
+                .filter(w -> w.getTranslation().equals(word.getTranslation()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
         String response;
-        JSONObject jsonObject = new JSONObject(foreignWord);
-        foreignWord = jsonObject.getString("foreignWord");
-        if (userWord.getTranslation().equals(foreignWord)) {
+        if (userWord.getTranslation().equals(foreign)) {
             response = "Brawo, tak trzymaj";
         } else {
             response = "Niestety nie udało się, sprobuj ponownie";
         }
-        return response;
+        return WordResponseDto.builder()
+                .wordId(userWord.getId())
+                .status(response)
+                .build();
 
     }
 
     @Override
-    public WordDto addWordToUser(Long userId, WordDto wordDto) {
+    public InitWord addWordToUser(Long userId, InitWord initWord) {
         User userFromDb = getUserFromDb(userId);
         List<Word> words = userFromDb.getWords();
         boolean isExistsAlready = words.stream()
-                .anyMatch(w -> w.getForeignWord().equals(wordDto.getForeignWord()));
+                .anyMatch(w -> w.getForeignWord().equals(initWord.getForeign()));
         if (!isExistsAlready) {
             words.add(Word.builder()
-                    .foreignWord(wordDto.getForeignWord())
-                    .translation(wordDto.getTranslation())
+                    .foreignWord(initWord.getForeign().toLowerCase())
+                    .translation(initWord.getTranslate().toLowerCase())
                     .user(userFromDb)
                     .build());
         } else {
             throw new IllegalArgumentException("Given word already exists !");
         }
         userRepository.save(userFromDb);
-        return wordDto;
+        return initWord;
     }
 
     private User getUserFromDb(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User with given id do not exists !"));
+    }
+
+    private Word getWord(WordRequestDto wordRequestDto) {
+        return wordRepository.findById(wordRequestDto.getWordId())
+                .orElseThrow(() -> new IllegalArgumentException("Word with given id do not exists !"));
     }
 }
