@@ -3,6 +3,7 @@ package com.example.verbvaultjava.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,7 +24,12 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**","/swagger-ui/**", "v3/api-docs/swagger-config", "v3/api-docs","/courses/**").permitAll()
+                        .requestMatchers("/users/register", "/users/authenticate", "/swagger-ui/**", "v3/api-docs/swagger-config", "v3/api-docs").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/courses").hasAuthority("admin")
+                        .requestMatchers(HttpMethod.GET, "/courses/{courseId}", "/courses", "/courses/{courseId}/words").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/courses/{courseId}/users/{userId}", "/courses/{courseId}/words/random",
+                                "/courses/{courseId}/words/translate", "/courses/{courseId}/words/foreign").permitAll()
+                        .requestMatchers("/users/{userId}/**", "/users", "/users/words/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

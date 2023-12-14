@@ -4,8 +4,10 @@ import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.service.course.CourseService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
