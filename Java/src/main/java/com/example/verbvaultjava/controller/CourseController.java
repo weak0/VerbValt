@@ -52,14 +52,14 @@ public class CourseController {
     }
 
     @PostMapping("/{courseId}/words/translate")
-    public ResponseEntity<CourseWordResponseDto> validForeignWord(@RequestParam(name = "word") String word, @RequestBody CourseWordRequestDto courseWordDto, @PathVariable Long courseId) {
-        CourseWordResponseDto response = courseService.validForeignWord(word, courseWordDto, courseId);
+    public ResponseEntity<CourseWordResponseDto> validForeignWord(@RequestBody CourseWordRequestDto courseWordDto, @PathVariable Long courseId) {
+        CourseWordResponseDto response = courseService.validForeignWord(courseWordDto, courseId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{courseId}/words/foreign")
-    public ResponseEntity<CourseWordResponseDto> validTranslateWord(@RequestParam(name = "word") String word, @RequestBody CourseWordRequestDto courseWordDto, @PathVariable Long courseId) {
-        CourseWordResponseDto response = courseService.validTranslateWord(word, courseWordDto, courseId);
+    public ResponseEntity<CourseWordResponseDto> validTranslateWord(@RequestBody CourseWordRequestDto courseWordDto, @PathVariable Long courseId) {
+        CourseWordResponseDto response = courseService.validTranslateWord(courseWordDto, courseId);
         return ResponseEntity.ok(response);
     }
 }

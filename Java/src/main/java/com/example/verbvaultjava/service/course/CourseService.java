@@ -14,6 +14,6 @@ public interface CourseService {
     List<WordDto> readAllWordsFromCourse(Long courseId);
     WordDto readRandomWordFromCourse(Long courseId);
 
-    CourseWordResponseDto validForeignWord(String word, CourseWordRequestDto courseWordDto, Long courseId);
-    CourseWordResponseDto validTranslateWord(String word, CourseWordRequestDto courseWordRequestDto, Long courseId);
+    CourseWordResponseDto validForeignWord(CourseWordRequestDto courseWordDto, Long courseId);
+    CourseWordResponseDto validTranslateWord(CourseWordRequestDto courseWordRequestDto, Long courseId);
 }
