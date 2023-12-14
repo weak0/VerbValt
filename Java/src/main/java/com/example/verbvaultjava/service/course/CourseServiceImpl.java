@@ -78,6 +78,7 @@ public class CourseServiceImpl implements CourseService {
         return courseFromDb.getCourseWords().stream()
                 .map(w -> {
                     WordDto wordDto = WordDto.builder()
+                            .wordId(w.getId())
                             .foreignWord(w.getForeignWord())
                             .translation(w.getTranslation())
                             .build();
