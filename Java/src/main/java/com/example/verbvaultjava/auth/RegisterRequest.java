@@ -1,5 +1,6 @@
 package com.example.verbvaultjava.auth;
 
+import com.example.verbvaultjava.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,5 @@ public class RegisterRequest {
     private String firstName;
     private String email;
     private String password;
-    private String role;
+    private Role role;
 }

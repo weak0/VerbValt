@@ -6,7 +6,6 @@ import com.example.verbvaultjava.model.Word;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.course.UserCourse;
 import com.example.verbvaultjava.model.dto.*;
-import com.example.verbvaultjava.repository.RoleRepository;
 import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
 import com.example.verbvaultjava.repository.WordRepository;
@@ -22,7 +21,6 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final UserCourseRepository userCourseRepository;
     private final WordRepository wordRepository;
 
@@ -32,7 +30,7 @@ public class UserServiceImpl implements UserService {
         UserResponse userResponse = UserResponse.builder()
                 .username(userFromDb.getUsername())
                 .email(userFromDb.getEmail())
-                .roleName(userFromDb.getRole().getRoleName())
+                .roleName(userFromDb.getRole().name())
                 .build();
         List<UserCourse> userCourses = userCourseRepository.findByUserId(userId);
         if (userCourses.isEmpty()) {
