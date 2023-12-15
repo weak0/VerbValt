@@ -33,7 +33,7 @@ public class DataLoadingService {
             Course courseFromDb = getCourse(courseLevel);
 
             for (String[] row : lines) {
-                if (!courseWordRepository.existsByForeignWord(row[0])){
+                if (!courseWordRepository.existsByForeignWord(row[0].toLowerCase())){
                     CourseWord courseWord = new CourseWord();
                     courseWord.setForeignWord(row[0].toLowerCase());
                     courseWord.setTranslation(row[1].toLowerCase());
@@ -57,7 +57,7 @@ public class DataLoadingService {
             Course courseFromDb = getCourse(courseLevel);
 
             for (String[] row : lines) {
-               if (!courseSentenceRepository.existsByForeignSentence(row[0])){
+               if (!courseSentenceRepository.existsByForeignSentence(row[0].toLowerCase())){
                    CourseSentence courseSentence = new CourseSentence();
                    courseSentence.setForeignSentence(row[0].toLowerCase());
                    courseSentence.setTranslation(row[1].toLowerCase());

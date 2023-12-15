@@ -1,5 +1,6 @@
 package com.example.verbvaultjava.model.course;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class CourseWord {
     private Long id;
     private String foreignWord;
     private String translation;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
