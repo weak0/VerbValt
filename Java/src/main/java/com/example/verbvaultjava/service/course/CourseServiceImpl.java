@@ -1,16 +1,16 @@
 package com.example.verbvaultjava.service.course;
 
 import com.example.verbvaultjava.model.User;
+import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.course.CourseWord;
 import com.example.verbvaultjava.model.course.UserCourse;
 import com.example.verbvaultjava.model.dto.*;
-import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.repository.CourseRepository;
+import com.example.verbvaultjava.repository.CourseWordRepository;
 import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +24,7 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final UserCourseRepository userCourseRepository;
+    private final CourseWordRepository courseWordRepository;
 
     @Override
     public Course createCourse(CourseDto courseDto) {
@@ -77,6 +78,7 @@ public class CourseServiceImpl implements CourseService {
         return courseFromDb.getCourseWords().stream()
                 .map(w -> {
                     WordDto wordDto = WordDto.builder()
+                            .wordId(w.getId())
                             .foreignWord(w.getForeignWord())
                             .translation(w.getTranslation())
                             .build();
@@ -87,7 +89,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public WordDto readRandomWordFromCourse(Long courseId) {
-
         Course courseFromDb = getCourseFromDb(courseId);
         List<CourseWord> courseWords = courseFromDb.getCourseWords();
         if (courseWords.isEmpty()) {
@@ -103,18 +104,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseWordResponseDto validForeignWord(String word, CourseWordRequestDto courseWordDto, Long courseId) {
-        String translate = courseWordDto.getWord();
+    public WordResponseDto validForeignWord(WordRequestDto courseWordDto, Long courseId) {
+        String foreignWord = getCourseWord(courseWordDto).getForeignWord();
         Long userId = courseWordDto.getUserId();
         Course courseFromDb = getCourseFromDb(courseId);
+        String word = courseWordDto.getWord();
+        word = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
         CourseWord courseWord = courseFromDb.getCourseWords()
                 .stream()
-                .filter(w -> w.getForeignWord().equals(word))
+                .filter(w -> w.getForeignWord().equals(foreignWord))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
         String response;
         UserCourse userCourse = getUserCourse(userId);
-        if (courseWord.getTranslation().equals(translate)) {
+        if (courseWord.getTranslation().equals(word)) {
             int progress = userCourse.getProgress();
             progress++;
             userCourse.setProgress(progress);
@@ -123,24 +126,23 @@ public class CourseServiceImpl implements CourseService {
             response = "Niestety nie udało się, sprobuj ponownie";
         }
         userCourseRepository.save(userCourse);
-        return  CourseWordResponseDto.builder()
+        return WordResponseDto.builder()
                 .wordId(courseWord.getId())
                 .status(response)
                 .build();
     }
 
-    private UserCourse getUserCourse(Long userId) {
-        return userCourseRepository.findUserCourseByUserId(userId).orElseThrow(() -> new IllegalArgumentException("User with given id not found !"));
-    }
-
     @Override
-    public CourseWordResponseDto validTranslateWord(String word, CourseWordRequestDto courseWordDto, Long courseId) {
+    public WordResponseDto validTranslateWord(WordRequestDto courseWordDto, Long courseId) {
         Course courseFromDb = getCourseFromDb(courseId);
         Long userId = courseWordDto.getUserId();
         String foreignWord = courseWordDto.getWord();
+        foreignWord = foreignWord.substring(0, 1).toUpperCase() + foreignWord.substring(1).toLowerCase(); //format string example : "Somestring"
+        CourseWord word = getCourseWord(courseWordDto);
+        String translation = word.getTranslation();
         CourseWord courseWord = courseFromDb.getCourseWords()
                 .stream()
-                .filter(w -> w.getTranslation().equals(word))
+                .filter(w -> w.getTranslation().equals(translation))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Given word do not exists in that course"));
         String response;
@@ -156,7 +158,7 @@ public class CourseServiceImpl implements CourseService {
             response = "Niestety nie udało się, spróbuj ponownie !";
         }
         userCourseRepository.save(userCourse);
-        return  CourseWordResponseDto.builder()
+        return WordResponseDto.builder()
                 .wordId(courseWord.getId())
                 .status(response)
                 .build();
@@ -168,5 +170,15 @@ public class CourseServiceImpl implements CourseService {
         if (isInCourse) {
             throw new IllegalArgumentException("User with given id is already in this course !");
         }
+    }
+
+    private CourseWord getCourseWord(WordRequestDto courseWordDto) {
+        CourseWord word = courseWordRepository.findById(courseWordDto.getWordId())
+                .orElseThrow(() -> new IllegalArgumentException("Word with given id do not exists !"));
+        return word;
+    }
+
+    private UserCourse getUserCourse(Long userId) {
+        return userCourseRepository.findUserCourseByUserId(userId).orElseThrow(() -> new IllegalArgumentException("User with given id not found !"));
     }
 }

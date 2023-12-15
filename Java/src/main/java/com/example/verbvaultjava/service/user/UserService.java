@@ -1,22 +1,20 @@
 package com.example.verbvaultjava.service.user;
 
 import com.example.verbvaultjava.model.User;
-import com.example.verbvaultjava.model.dto.UserDto;
-import com.example.verbvaultjava.model.dto.UserResponse;
-import com.example.verbvaultjava.model.dto.WordDto;
+import com.example.verbvaultjava.model.dto.*;
 
 import java.util.List;
 
 public interface UserService {
     UserResponse getUsersResponse(Long userId);
-    WordDto addWordToUser(Long userId,WordDto wordDto);
+    InitWord addWordToUser(Long userId,InitWord initWord);
     List<User> getUsers();
 
     List<WordDto> getUsersWord(Long userId);
 
     WordDto getRandomWord(Long userId);
 
-    String validForeignWord(String word, String translate, Long userId);
+    WordResponseDto validForeignWord(WordRequestDto wordRequestDto);
 
-    String validTranslateWord(String word, String foreignWord, Long userId);
+    WordResponseDto validTranslateWord(WordRequestDto wordRequestDto);
     }

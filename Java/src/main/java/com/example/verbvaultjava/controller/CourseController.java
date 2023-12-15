@@ -1,17 +1,17 @@
 package com.example.verbvaultjava.controller;
 
 import com.example.verbvaultjava.model.User;
-import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.model.course.Course;
+import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.service.course.CourseService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/courses")
@@ -52,14 +52,14 @@ public class CourseController {
     }
 
     @PostMapping("/{courseId}/words/translate")
-    public ResponseEntity<CourseWordResponseDto> validForeignWord(@RequestParam(name = "word") String word, @RequestBody CourseWordRequestDto courseWordDto, @PathVariable Long courseId) {
-        CourseWordResponseDto response = courseService.validForeignWord(word, courseWordDto, courseId);
+    public ResponseEntity<WordResponseDto> validForeignWord(@RequestBody WordRequestDto courseWordDto, @PathVariable Long courseId) {
+        WordResponseDto response = courseService.validForeignWord(courseWordDto, courseId);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/{courseId}/words/foreign")
-    public ResponseEntity<CourseWordResponseDto> validTranslateWord(@RequestParam(name = "word") String word, @RequestBody CourseWordRequestDto courseWordDto, @PathVariable Long courseId) {
-        CourseWordResponseDto response = courseService.validTranslateWord(word, courseWordDto, courseId);
+    public ResponseEntity<WordResponseDto> validTranslateWord(@RequestBody WordRequestDto courseWordDto, @PathVariable Long courseId) {
+        WordResponseDto response = courseService.validTranslateWord(courseWordDto, courseId);
         return ResponseEntity.ok(response);
     }
 }
