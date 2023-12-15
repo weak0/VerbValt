@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/register", "/users/authenticate", "/swagger-ui/**", "v3/api-docs/swagger-config", "v3/api-docs").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/courses").hasAuthority("admin")
+                        .requestMatchers(HttpMethod.POST, "/courses").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/courses/{courseId}", "/courses", "/courses/{courseId}/words", "/courses/{courseId}/words/random").permitAll()
                         .requestMatchers(HttpMethod.POST, "/courses/{courseId}/users/{userId}",
                                 "/courses/{courseId}/words/translate", "/courses/{courseId}/words/foreign").permitAll()

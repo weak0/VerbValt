@@ -1,6 +1,8 @@
 package com.example.verbvaultjava.auth;
 
 import com.example.verbvaultjava.config.JwtService;
+import com.example.verbvaultjava.exception.UserRoleException;
+import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.repository.UserRepository;
 import com.example.verbvaultjava.token.Token;
@@ -25,11 +27,18 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse register(RegisterRequest request) {
+        String roleStr = request.getRole().toUpperCase();
+        Role role;
+        if (!roleStr.equals(Role.ADMIN.toString()) && !roleStr.equals(Role.TUTOR.toString()) && !roleStr.equals(Role.STUDENT.toString())) {
+            throw new UserRoleException("Given role is not exists!");
+        } else {
+            role = Role.valueOf(roleStr);
+        }
         User user = User.builder()
                 .nickName(request.getFirstName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(role)
                 .build();
         User userFromDb = repository.save(user);
         String jwtToken = jwtService.generateToken(user);
