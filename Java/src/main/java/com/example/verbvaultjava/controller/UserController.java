@@ -70,4 +70,8 @@ public class UserController {
         userService.deleteUserWord(userId, wordId);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{userId}/words")
+    public ResponseEntity<InitWord>updateUserWord(@PathVariable Long userId,@RequestBody WordDto wordDto){
+        return ResponseEntity.ok(userService.updateWord(userId,wordDto));
+    }
 }

@@ -156,6 +156,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public InitWord updateWord(Long userId, WordDto wordDto) {
+        User userFromDb = getUserFromDb(userId);
+        Word word = getWord(wordDto.getWordId());
+        word.setForeignWord(wordDto.getForeignWord());
+        word.setTranslation(wordDto.getTranslation());
+        int index = userFromDb.getWords().indexOf(word);
+        userFromDb.getWords().set(index,word);
+        userRepository.save(userFromDb);
+        return InitWord.builder()
+                .foreign(word.getForeignWord())
+                .translate(word.getTranslation())
+                .build();
+    }
+
+    @Override
     public void deleteUserWord(Long userId, Long wordId) {
         Word word = getWord(wordId);
         User userFromDb = getUserFromDb(userId);
