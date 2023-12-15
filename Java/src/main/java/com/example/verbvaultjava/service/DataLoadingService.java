@@ -1,5 +1,6 @@
 package com.example.verbvaultjava.service;
 
+import com.example.verbvaultjava.exception.CourseNotFoundException;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.course.CourseSentence;
 import com.example.verbvaultjava.model.course.CourseWord;
@@ -78,7 +79,7 @@ public class DataLoadingService {
             courseRepository.save(course1);
         }
         return courseRepository.findByCourseLevelIgnoreCase(courseLevel)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new CourseNotFoundException("not found"));
     }
 
     private List<String[]> loadFromCSV(String path) {

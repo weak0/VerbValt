@@ -1,6 +1,8 @@
 package com.example.verbvaultjava.service.user;
 
 
+import com.example.verbvaultjava.exception.UserNotFoundException;
+import com.example.verbvaultjava.exception.UserWordAlreadyExistsException;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.Word;
 import com.example.verbvaultjava.model.course.Course;
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService {
 
     private void validUserWords(List<Word> words) {
         if (words.isEmpty()) {
-            throw new IllegalArgumentException("User have no words !");
+            throw new UserNotFoundException("User have no words !");
         }
     }
 
@@ -99,7 +101,7 @@ public class UserServiceImpl implements UserService {
         Word userWord = userFromDb.getWords().stream()
                 .filter(w -> w.getForeignWord().equals(word.getForeignWord()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
+                .orElseThrow(() -> new UserNotFoundException("Given word do not exist in that course !"));
         String response;
         if (userWord.getTranslation().equals(translate)) {
             response = "Brawo, tak trzymaj";
@@ -120,7 +122,7 @@ public class UserServiceImpl implements UserService {
         Word userWord = userFromDb.getWords().stream()
                 .filter(w -> w.getTranslation().equals(word.getTranslation()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
+                .orElseThrow(() -> new UserNotFoundException("Given word do not exist in that course !"));
         String response;
         if (userWord.getTranslation().equals(foreign)) {
             response = "Brawo, tak trzymaj";
@@ -147,18 +149,18 @@ public class UserServiceImpl implements UserService {
                     .user(userFromDb)
                     .build());
         } else {
-            throw new IllegalArgumentException("Given word already exists !");
+            throw new UserWordAlreadyExistsException("Given word already exists !");
         }
         userRepository.save(userFromDb);
         return initWord;
     }
 
     private User getUserFromDb(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User with given id do not exists !"));
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with given id do not exists !"));
     }
 
     private Word getWord(WordRequestDto wordRequestDto) {
         return wordRepository.findById(wordRequestDto.getWordId())
-                .orElseThrow(() -> new IllegalArgumentException("Word with given id do not exists !"));
+                .orElseThrow(() -> new UserNotFoundException("Word with given id do not exists !"));
     }
 }

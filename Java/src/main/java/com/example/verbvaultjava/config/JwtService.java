@@ -1,5 +1,6 @@
 package com.example.verbvaultjava.config;
 
+import com.example.verbvaultjava.exception.UserNotFoundException;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -41,7 +42,7 @@ public class JwtService {
             UserDetails userDetails
     ) {
         User user = repository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("User not found !"));
+                .orElseThrow(() -> new UserNotFoundException("User not found !"));
         List<String> roles = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());

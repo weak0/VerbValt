@@ -16,6 +16,9 @@ public class ExceptionControllerAdvice {
         EXCEPTION_STATUS.put(UserRoleException.class, HttpStatus.BAD_REQUEST);
         EXCEPTION_STATUS.put(InvalidUserPassword.class,HttpStatus.CONFLICT);
         EXCEPTION_STATUS.put(UserNotFoundException.class,HttpStatus.NOT_FOUND);
+        EXCEPTION_STATUS.put(CourseNotFoundException.class,HttpStatus.NOT_FOUND);
+        EXCEPTION_STATUS.put(CourseUserAlreadyExistsException.class,HttpStatus.BAD_REQUEST);
+        EXCEPTION_STATUS.put(UserWordAlreadyExistsException.class,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
