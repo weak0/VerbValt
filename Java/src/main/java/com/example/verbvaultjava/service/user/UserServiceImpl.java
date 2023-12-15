@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public WordResponseDto validForeignWord(WordRequestDto wordRequestDto) {
         User userFromDb = getUserFromDb(wordRequestDto.getUserId());
-        Word word = getWord(wordRequestDto);
+        Word word = getWord(wordRequestDto.getWordId());
         String translate = wordRequestDto.getWord().toLowerCase();
         Word userWord = userFromDb.getWords().stream()
                 .filter(w -> w.getForeignWord().equals(word.getForeignWord()))
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public WordResponseDto validTranslateWord(WordRequestDto wordRequestDto) {
         User userFromDb = getUserFromDb(wordRequestDto.getUserId());
-        Word word = getWord(wordRequestDto);
+        Word word = getWord(wordRequestDto.getWordId());
         String foreign = wordRequestDto.getWord().toLowerCase();
         Word userWord = userFromDb.getWords().stream()
                 .filter(w -> w.getTranslation().equals(word.getTranslation()))
@@ -155,12 +155,20 @@ public class UserServiceImpl implements UserService {
         return initWord;
     }
 
+    @Override
+    public void deleteUserWord(Long userId, Long wordId) {
+        Word word = getWord(wordId);
+        User userFromDb = getUserFromDb(userId);
+        userFromDb.getWords().remove(word);
+        userRepository.save(userFromDb);
+    }
+
     private User getUserFromDb(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with given id do not exists !"));
     }
 
-    private Word getWord(WordRequestDto wordRequestDto) {
-        return wordRepository.findById(wordRequestDto.getWordId())
+    private Word getWord(Long wordId) {
+        return wordRepository.findById(wordId)
                 .orElseThrow(() -> new UserNotFoundException("Word with given id do not exists !"));
     }
 }

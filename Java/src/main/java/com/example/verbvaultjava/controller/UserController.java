@@ -65,4 +65,9 @@ public class UserController {
     public ResponseEntity<InitWord> addWordToUser(@PathVariable Long userId, @RequestBody InitWord initWord) {
         return ResponseEntity.ok(userService.addWordToUser(userId, initWord));
     }
+    @DeleteMapping("/{userId}/words/{wordId}")
+    public ResponseEntity<?>deleteUserWord(@PathVariable Long userId,@PathVariable Long wordId){
+        userService.deleteUserWord(userId, wordId);
+        return ResponseEntity.noContent().build();
+    }
 }
