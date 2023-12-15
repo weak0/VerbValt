@@ -1,5 +1,6 @@
 package com.example.verbvaultjava.config;
 
+import com.example.verbvaultjava.exception.UserNotFoundException;
 import com.example.verbvaultjava.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> userRepository.findUserByEmail(username)
-                .orElseThrow(()-> new IllegalArgumentException("User not found !"));
+                .orElseThrow(()-> new UserNotFoundException("User with given email do not exists !"));
     }
     @Bean
     public AuthenticationProvider authenticationProvider(){

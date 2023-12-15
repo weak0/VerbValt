@@ -14,6 +14,8 @@ public class ExceptionControllerAdvice {
 
     static {
         EXCEPTION_STATUS.put(UserRoleException.class, HttpStatus.BAD_REQUEST);
+        EXCEPTION_STATUS.put(InvalidUserPassword.class,HttpStatus.CONFLICT);
+        EXCEPTION_STATUS.put(UserNotFoundException.class,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)

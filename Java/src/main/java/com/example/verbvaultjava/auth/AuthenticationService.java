@@ -1,6 +1,8 @@
 package com.example.verbvaultjava.auth;
 
 import com.example.verbvaultjava.config.JwtService;
+import com.example.verbvaultjava.exception.InvalidUserPassword;
+import com.example.verbvaultjava.exception.UserNotFoundException;
 import com.example.verbvaultjava.exception.UserRoleException;
 import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
@@ -49,9 +51,12 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         User user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(()->new UserNotFoundException("User with given email do not exists !"));
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidUserPassword("Invalid password !");
+        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         String jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
