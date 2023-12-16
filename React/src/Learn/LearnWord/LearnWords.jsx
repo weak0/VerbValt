@@ -2,15 +2,17 @@ import React, { useEffect } from 'react'
 import { fetchData } from '../../user'
 import { testuser } from '../../user'
 import './LearnWord.css'
+import CheckPopup from '../../Popups/CheckPopup'
 
 
 const LearnWords = (props) => {
   const { courseId } = props
   const [word, setWord] = React.useState()
-  const [checkResult, setCheckResult] = React.useState()
+  const [inputValue, setInputValue] = React.useState()
+
 
   const getRandomWord = async () => {
-    setCheckResult('')
+    setInputValue('')
     if (courseId == 0) {
       return getRandomUserWord()
     }
@@ -22,10 +24,10 @@ const LearnWords = (props) => {
     setWord(response);
   }
 
-  // const checkWord = async (wordId, foreignWord) => {
-  //   const response = await fetchData(`courses/${courseId}/users/${testuser.id}/words/${wordId}`, "POST", { foreignWord })
-  //   setCheckResult(response)
-  // }
+  const checkWord = async (wordId, foreignWord) => {
+    const response = await fetchData(`courses/${courseId}/words/foreign`, "POST", { userId: testuser.id, wordId: wordId, word: foreignWord })
+    console.log(response)
+  }
 
   const encodeWord = (word) => {
     return word.split('').map(letter => letter === ' ' ? letter : '_ ').join('')
@@ -40,12 +42,11 @@ const LearnWords = (props) => {
       {word && <>
         <p className='word-foregin'>{encodeWord(word.foreignWord)}</p>
         <p className='word-translation'>{word.translation}</p>
-        <input type="text" className='learn-word-input' value={checkResult} onChange={(e) => setCheckResult(e.target.value) }/>
+        <input type="text" className='learn-word-input' value={inputValue} onChange={(e) => setInputValue(e.target.value) }/>
         <div className='learn-word-buttons'>
         <button  onClick={() => getRandomWord()}>Next</button>
-        <button onClick={() => console.log("xd")}>Check</button>
+        <button onClick={() => checkWord(word.wordId, inputValue)}>Check</button>
         </div>
-
       </>}
     </div>
   )

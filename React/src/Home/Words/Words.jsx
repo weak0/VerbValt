@@ -19,7 +19,7 @@ const Words = (props) => {
   const [translation, setTranslation] = React.useState("");
 
   const addWord = async () => {
-    await fetchData(`user/${testuser.id}/words`, "POST", { foreignWord, translation })
+    await fetchData(`users/${testuser.id}/words`, "POST", { foreign: foreignWord, translate: translation })
     setForeignWord("")
     setTranslation("")
   }
