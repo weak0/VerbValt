@@ -112,7 +112,7 @@ public class CourseServiceImpl implements CourseService {
         Long userId = courseWordDto.getUserId();
         Course courseFromDb = getCourseFromDb(courseId);
         String word = courseWordDto.getWord();
-        word = word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+        word = word.toLowerCase();
         CourseWord courseWord = courseFromDb.getCourseWords()
                 .stream()
                 .filter(w -> w.getForeignWord().equals(foreignWord))
@@ -140,7 +140,7 @@ public class CourseServiceImpl implements CourseService {
         Course courseFromDb = getCourseFromDb(courseId);
         Long userId = courseWordDto.getUserId();
         String foreignWord = courseWordDto.getWord();
-        foreignWord = foreignWord.substring(0, 1).toUpperCase() + foreignWord.substring(1).toLowerCase(); //format string example : "Somestring"
+        foreignWord = foreignWord.toLowerCase();
         CourseWord word = getCourseWord(courseWordDto);
         String translation = word.getTranslation();
         CourseWord courseWord = courseFromDb.getCourseWords()
