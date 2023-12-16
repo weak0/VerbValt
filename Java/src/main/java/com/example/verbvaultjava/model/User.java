@@ -27,23 +27,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nickName;
-
     @JsonIgnore
     private String password;
     private String email;
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+    @Enumerated(EnumType.STRING)
     private Role role;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Word> words = new ArrayList<>();
-
     @ManyToMany
     @JoinTable(
             name = "user_course",
@@ -55,7 +49,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @JsonIgnore

@@ -1,5 +1,6 @@
 package com.example.verbvaultjava.service;
 
+import com.example.verbvaultjava.exception.CourseNotFoundException;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.course.CourseSentence;
 import com.example.verbvaultjava.model.course.CourseWord;
@@ -33,10 +34,10 @@ public class DataLoadingService {
             Course courseFromDb = getCourse(courseLevel);
 
             for (String[] row : lines) {
-                if (!courseWordRepository.existsByForeignWord(row[0])){
+                if (!courseWordRepository.existsByForeignWord(row[0].toLowerCase())){
                     CourseWord courseWord = new CourseWord();
-                    courseWord.setForeignWord(row[0]);
-                    courseWord.setTranslation(row[1]);
+                    courseWord.setForeignWord(row[0].toLowerCase());
+                    courseWord.setTranslation(row[1].toLowerCase());
                     courseWord.setCourse(courseFromDb);
                     CourseWord save = courseWordRepository.save(courseWord);
                     courseFromDb.getCourseWords().add(save);
@@ -57,10 +58,10 @@ public class DataLoadingService {
             Course courseFromDb = getCourse(courseLevel);
 
             for (String[] row : lines) {
-               if (!courseSentenceRepository.existsByForeignSentence(row[0])){
+               if (!courseSentenceRepository.existsByForeignSentence(row[0].toLowerCase())){
                    CourseSentence courseSentence = new CourseSentence();
-                   courseSentence.setForeignSentence(row[0]);
-                   courseSentence.setTranslation(row[1]);
+                   courseSentence.setForeignSentence(row[0].toLowerCase());
+                   courseSentence.setTranslation(row[1].toLowerCase());
                    courseSentence.setCourse(courseFromDb);
                    CourseSentence save = courseSentenceRepository.save(courseSentence);
                    courseFromDb.getCourseSentences().add(save);
@@ -78,7 +79,7 @@ public class DataLoadingService {
             courseRepository.save(course1);
         }
         return courseRepository.findByCourseLevelIgnoreCase(courseLevel)
-                .orElseThrow(() -> new RuntimeException("not found"));
+                .orElseThrow(() -> new CourseNotFoundException("not found"));
     }
 
     private List<String[]> loadFromCSV(String path) {

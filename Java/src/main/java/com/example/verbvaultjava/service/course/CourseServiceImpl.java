@@ -1,5 +1,8 @@
 package com.example.verbvaultjava.service.course;
 
+import com.example.verbvaultjava.exception.CourseNotFoundException;
+import com.example.verbvaultjava.exception.UserNotFoundException;
+import com.example.verbvaultjava.exception.CourseUserAlreadyExistsException;
 import com.example.verbvaultjava.model.User;
 import com.example.verbvaultjava.model.course.Course;
 import com.example.verbvaultjava.model.course.CourseWord;
@@ -55,13 +58,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private Course getCourseFromDb(Long courseId) {
-        return courseRepository.findById(courseId).orElseThrow(() -> new IllegalArgumentException("Course id not found"));
+        return courseRepository.findById(courseId).orElseThrow(() -> new CourseNotFoundException("Course id not found"));
     }
 
     @Transactional
     @Override
     public User addUerToCourse(Long courseId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User id not found !"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User id not found !"));
         Course courseFromDb = getCourseFromDb(courseId);
         validUserCourse(userId, courseFromDb);
         UserCourse userCourse = new UserCourse();
@@ -92,7 +95,7 @@ public class CourseServiceImpl implements CourseService {
         Course courseFromDb = getCourseFromDb(courseId);
         List<CourseWord> courseWords = courseFromDb.getCourseWords();
         if (courseWords.isEmpty()) {
-            throw new IllegalArgumentException("Course with given id do not have any word !");
+            throw new CourseNotFoundException("Course with given id do not have any word !");
         }
         Random rnd = new Random();
         int randomIndex = rnd.nextInt(courseWords.size());
@@ -114,7 +117,7 @@ public class CourseServiceImpl implements CourseService {
                 .stream()
                 .filter(w -> w.getForeignWord().equals(foreignWord))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Given word do not exist in that course !"));
+                .orElseThrow(() -> new CourseNotFoundException("Given word do not exist in that course !"));
         String response;
         UserCourse userCourse = getUserCourse(userId);
         if (courseWord.getTranslation().equals(word)) {
@@ -144,7 +147,7 @@ public class CourseServiceImpl implements CourseService {
                 .stream()
                 .filter(w -> w.getTranslation().equals(translation))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Given word do not exists in that course"));
+                .orElseThrow(() -> new CourseNotFoundException("Given word do not exists in that course"));
         String response;
         UserCourse userCourse = getUserCourse(userId);
         if (courseWord.getForeignWord().equals(foreignWord)) {
@@ -168,17 +171,17 @@ public class CourseServiceImpl implements CourseService {
         boolean isInCourse = course.getUsers().stream()
                 .anyMatch(u -> u.getId().equals(userId));
         if (isInCourse) {
-            throw new IllegalArgumentException("User with given id is already in this course !");
+            throw new CourseUserAlreadyExistsException("User with given id is already in this course !");
         }
     }
 
     private CourseWord getCourseWord(WordRequestDto courseWordDto) {
         CourseWord word = courseWordRepository.findById(courseWordDto.getWordId())
-                .orElseThrow(() -> new IllegalArgumentException("Word with given id do not exists !"));
+                .orElseThrow(() -> new CourseNotFoundException("Word with given id do not exists !"));
         return word;
     }
 
     private UserCourse getUserCourse(Long userId) {
-        return userCourseRepository.findUserCourseByUserId(userId).orElseThrow(() -> new IllegalArgumentException("User with given id not found !"));
+        return userCourseRepository.findUserCourseByUserId(userId).orElseThrow(() -> new UserNotFoundException("User with given id not found !"));
     }
 }

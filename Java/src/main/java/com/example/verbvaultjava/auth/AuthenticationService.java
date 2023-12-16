@@ -1,9 +1,11 @@
 package com.example.verbvaultjava.auth;
 
 import com.example.verbvaultjava.config.JwtService;
+import com.example.verbvaultjava.exception.InvalidUserPassword;
+import com.example.verbvaultjava.exception.UserNotFoundException;
+import com.example.verbvaultjava.exception.UserRoleException;
 import com.example.verbvaultjava.model.Role;
 import com.example.verbvaultjava.model.User;
-import com.example.verbvaultjava.repository.RoleRepository;
 import com.example.verbvaultjava.repository.UserRepository;
 import com.example.verbvaultjava.token.Token;
 import com.example.verbvaultjava.token.TokenRepository;
@@ -15,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,16 +26,15 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final RoleRepository roleRepository;
+
 
     public AuthenticationResponse register(RegisterRequest request) {
-        Optional<Role> byRoleName = roleRepository.findByRoleName(request.getRole());
+        String roleStr = request.getRole().toUpperCase();
         Role role;
-        if (byRoleName.isEmpty()) {
-            role = new Role();
-            role.setRoleName(request.getRole());
+        if (!roleStr.equals(Role.ADMIN.toString()) && !roleStr.equals(Role.TUTOR.toString()) && !roleStr.equals(Role.STUDENT.toString())) {
+            throw new UserRoleException("Given role is not exists!");
         } else {
-            role = byRoleName.get();
+            role = Role.valueOf(roleStr);
         }
         User user = User.builder()
                 .nickName(request.getFirstName())
@@ -42,21 +42,21 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(role)
                 .build();
-        roleRepository.save(role);
         User userFromDb = repository.save(user);
         String jwtToken = jwtService.generateToken(user);
         saveUserToken(userFromDb, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
-
     }
 
-
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         User user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(()->new UserNotFoundException("User with given email do not exists !"));
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new InvalidUserPassword("Invalid password !");
+        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         String jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);

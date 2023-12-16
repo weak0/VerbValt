@@ -17,4 +17,6 @@ public interface UserService {
     WordResponseDto validForeignWord(WordRequestDto wordRequestDto);
 
     WordResponseDto validTranslateWord(WordRequestDto wordRequestDto);
+    void deleteUserWord(Long userId,Long wordId);
+    InitWord updateWord(Long userId, WordDto wordDto);
     }
