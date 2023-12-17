@@ -25,8 +25,18 @@ const LearnWords = (props) => {
   }
 
   const checkWord = async (wordId, foreignWord) => {
+    if (courseId == 0) {
+      return checkUserWord(wordId, foreignWord)
+    }
     const response = await fetchData(`courses/${courseId}/words/foreign`, "POST", { userId: testuser.id, wordId: wordId, word: foreignWord })
     console.log(response)
+    getRandomWord()
+  }
+
+  const checkUserWord = async (wordId, foreignWord) => {
+    const response = await fetchData(`users/${testuser.id}/words/foreign`, "POST", { userId: testuser.id, wordId: wordId, word: foreignWord })
+    console.log(response)
+    getRandomWord()
   }
 
   const encodeWord = (word) => {
