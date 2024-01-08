@@ -4,12 +4,10 @@ import { testuser } from '../../user'
 import './LearnWord.css'
 import CheckPopup from '../../Popups/CheckPopup'
 
-
 const LearnWords = (props) => {
   const { courseId } = props
   const [word, setWord] = React.useState()
   const [inputValue, setInputValue] = React.useState()
-
 
   const getRandomWord = async () => {
     setInputValue('')
