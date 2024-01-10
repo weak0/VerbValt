@@ -4,7 +4,6 @@ import { PiVault } from "react-icons/pi";
 import { CiSettings } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
 import { IoMdBook } from "react-icons/io";
-import { FaRegNoteSticky } from "react-icons/fa6";
 import { SiSpeedtest } from "react-icons/si";
 import Courses from "./Courses/Courses";
 
