@@ -1,6 +1,7 @@
 import "./Form.css";
 
 const FormRegister = () => {
+  
   const register = async (e) => {
     e.preventDefault();
     const form = document.getElementById("register");
