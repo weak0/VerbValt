@@ -74,4 +74,9 @@ public class UserController {
     public ResponseEntity<InitWord>updateUserWord(@PathVariable Long userId,@RequestBody WordDto wordDto){
         return ResponseEntity.ok(userService.updateWord(userId,wordDto));
     }
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?>deleteUser(@PathVariable Long userId){
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
 }
