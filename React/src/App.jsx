@@ -8,6 +8,7 @@ import { testuser } from "./user";
 function App() {
   //localStorage.setItem('user', testuser);
   const user = localStorage.getItem("user");
+
   const [isRegisterActive, setRegisterActive] = useState(true);
   function isRegisterActiveHandler() {
     setRegisterActive(prevState=>!prevState);
@@ -24,7 +25,10 @@ function App() {
               <p>The app is under development so please be patient... </p>
               <button>Get Started</button>
             </div>
-            {isRegisterActive ? <FormRegister isRegisterActiveHandler={isRegisterActiveHandler}/> : <FormLogin isRegisterActiveHandler={isRegisterActiveHandler} />}
+            <div className="landingpage-actions">
+        <button onClick={isRegisterActiveHandler}>{isRegisterActive ? 'Sign In':'Sing Un'}</button>
+      </div>
+            {isRegisterActive ? <FormLogin /> : <FormRegister/>}
           </div>
         </div>
       ) : (
