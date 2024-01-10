@@ -11,22 +11,39 @@ const FormRegister = () => {
     if (obj.password !== obj.passwordRepeat) {
       alert("Passwords do not match");
       return;
-    }
-    const json = JSON.stringify(obj);
-    console.log(json,role.value);
+    } 
 
-    // const userTokenResponse = await fetch(
-    //   "http://127.0.0.1:8000/users/register",
-    //   {
-    //     method: "POST",
-    //     body: json,
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
-  //   const token = JSON.parse(userTokenResponse).token;
-  //   console.log(token);
+    const body = {
+      nickName: obj.name,
+      firstName: obj.name,
+      email: obj.email,
+      password: obj.password,
+      role: role.value,
+    }
+
+    const json = JSON.stringify(body);
+    
+    const userTokenResponse = await fetch(
+      "http://127.0.0.1:8000/users/register",
+      {
+        method: "POST",
+        body: json,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (userTokenResponse.ok) {
+      const responseData = await userTokenResponse.json();
+      const token = responseData.token;
+    
+      localStorage.setItem("token", token);
+      console.log(token);
+    } else {
+      console.error("Błąd podczas rejestracji użytkownika:", userTokenResponse.statusText);
+    }    
+    
   };
   return (
     <div className="form">
