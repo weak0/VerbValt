@@ -29,7 +29,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/courses/{courseId}", "/courses", "/courses/{courseId}/words", "/courses/{courseId}/words/random").permitAll()
                         .requestMatchers(HttpMethod.POST, "/courses/{courseId}/users/{userId}",
                                 "/courses/{courseId}/words/translate", "/courses/{courseId}/words/foreign").permitAll()
+
                         .requestMatchers("/users/{userId}/**", "/users", "/users/words/**").permitAll()
+
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

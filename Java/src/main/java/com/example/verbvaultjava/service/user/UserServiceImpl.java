@@ -178,6 +178,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userFromDb);
     }
 
+    @Override
+    public void deleteUser(Long userId) {
+        User userFromDb = getUserFromDb(userId);
+        userRepository.delete(userFromDb);
+    }
+
     private User getUserFromDb(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with given id do not exists !"));
     }

@@ -1,7 +1,12 @@
+.container {
+  display: flex;
+  width: 100vw; 
+  height: 100vh;
+  overflow: hidden;
+}
+
 .landingpage {
-  position: absolute;
-  left: 0;
-  top: 0;
+  width: 30vw;
   height: 100vh;
   padding: 0 2rem;
   background-color: rgba(0, 0, 0, 0.6);
