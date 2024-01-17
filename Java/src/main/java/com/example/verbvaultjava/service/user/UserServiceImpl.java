@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
                 .findFirst()
                 .orElseThrow(() -> new UserNotFoundException("Given word do not exist in that course !"));
         String response;
-        if (userWord.getTranslation().equals(foreign)) {
+        if (userWord.getForeignWord().equals(foreign)) {
             response = "Brawo, tak trzymaj";
         } else {
             response = "Niestety nie udało się, sprobuj ponownie";
