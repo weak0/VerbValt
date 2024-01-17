@@ -64,6 +64,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public User addUerToCourse(Long courseId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User id not found !"));
+        List<Course> courses = user.getCourses();
+        if (!courses.isEmpty()){
+            throw new CourseUserAlreadyExistsException("User already enrollment to any course !");
+        }
         Course courseFromDb = getCourseFromDb(courseId);
         validUserCourse(userId, courseFromDb);
         UserCourse userCourse = new UserCourse();
