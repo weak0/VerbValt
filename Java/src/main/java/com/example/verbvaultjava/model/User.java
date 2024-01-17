@@ -31,7 +31,7 @@ public class User implements UserDetails {
     private String password;
     private String email;
     @JsonIgnore
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<Token> tokens;
     @Enumerated(EnumType.STRING)
     private Role role;

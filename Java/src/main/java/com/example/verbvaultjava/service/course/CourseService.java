@@ -16,4 +16,10 @@ public interface CourseService {
 
     WordResponseDto validForeignWord(WordRequestDto courseWordDto, Long courseId);
     WordResponseDto validTranslateWord(WordRequestDto courseWordRequestDto, Long courseId);
+    SentenceResponseDto validForeignSentence(SentenceRequestDto sentenceRequestDto,Long courseId);
+    SentenceResponseDto validTranslateSentence(SentenceRequestDto sentenceRequestDto,Long courseId);
+
+    SentenceDto readRandomSentenceFromCourse(Long courseId);
+
+    List<SentenceDto> readAllSentencesFromCourse(Long courseId);
 }
