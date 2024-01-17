@@ -11,6 +11,8 @@ import com.example.verbvaultjava.model.dto.*;
 import com.example.verbvaultjava.repository.UserCourseRepository;
 import com.example.verbvaultjava.repository.UserRepository;
 import com.example.verbvaultjava.repository.WordRepository;
+import com.example.verbvaultjava.token.Token;
+import com.example.verbvaultjava.token.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserCourseRepository userCourseRepository;
     private final WordRepository wordRepository;
+    private final TokenRepository tokenRepository;
 
     @Override
     public UserResponse getUsersResponse(Long userId) {
@@ -124,7 +127,7 @@ public class UserServiceImpl implements UserService {
                 .findFirst()
                 .orElseThrow(() -> new UserNotFoundException("Given word do not exist in that course !"));
         String response;
-        if (userWord.getTranslation().equals(foreign)) {
+        if (userWord.getForeignWord().equals(foreign)) {
             response = "Brawo, tak trzymaj";
         } else {
             response = "Niestety nie udało się, sprobuj ponownie";
@@ -162,7 +165,7 @@ public class UserServiceImpl implements UserService {
         word.setForeignWord(wordDto.getForeignWord());
         word.setTranslation(wordDto.getTranslation());
         int index = userFromDb.getWords().indexOf(word);
-        userFromDb.getWords().set(index,word);
+        userFromDb.getWords().set(index, word);
         userRepository.save(userFromDb);
         return InitWord.builder()
                 .foreign(word.getForeignWord())

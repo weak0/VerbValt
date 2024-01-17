@@ -45,10 +45,18 @@ public class CourseController {
     public ResponseEntity<List<WordDto>> readAllWordsCourse(@PathVariable Long courseId) {
         return ResponseEntity.ok(courseService.readAllWordsFromCourse(courseId));
     }
+    @GetMapping("/{courseId}/sentences")
+    public ResponseEntity<List<SentenceDto>> readAllSentencesCourse(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.readAllSentencesFromCourse(courseId));
+    }
 
     @GetMapping("/{courseId}/words/random")
     public ResponseEntity<WordDto> readRandomWord(@PathVariable Long courseId) {
         return ResponseEntity.ok(courseService.readRandomWordFromCourse(courseId));
+    }
+    @GetMapping("/{courseId}/sentences/random")
+    public ResponseEntity<SentenceDto> readRandomSentence(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.readRandomSentenceFromCourse(courseId));
     }
 
     @PostMapping("/{courseId}/words/translate")
@@ -60,6 +68,16 @@ public class CourseController {
     @PostMapping("/{courseId}/words/foreign")
     public ResponseEntity<WordResponseDto> validTranslateWord(@RequestBody WordRequestDto courseWordDto, @PathVariable Long courseId) {
         WordResponseDto response = courseService.validTranslateWord(courseWordDto, courseId);
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/{courseId}/sentences/translate")
+    public ResponseEntity<SentenceResponseDto> validForeignSentence(@RequestBody SentenceRequestDto sentenceRequestDto, @PathVariable Long courseId) {
+        SentenceResponseDto response = courseService.validForeignSentence(sentenceRequestDto, courseId);
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/{courseId}/sentences/foreign")
+    public ResponseEntity<SentenceResponseDto> validTranslateSentence(@RequestBody SentenceRequestDto sentenceRequestDto, @PathVariable Long courseId) {
+        SentenceResponseDto response = courseService.validTranslateSentence(sentenceRequestDto, courseId);
         return ResponseEntity.ok(response);
     }
 }

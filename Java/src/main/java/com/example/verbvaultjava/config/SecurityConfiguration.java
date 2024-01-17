@@ -26,9 +26,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/register", "/users/authenticate", "/swagger-ui/**", "v3/api-docs/swagger-config", "v3/api-docs").permitAll()
                         .requestMatchers(HttpMethod.POST, "/courses").hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/courses/{courseId}", "/courses", "/courses/{courseId}/words", "/courses/{courseId}/words/random").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/courses/{courseId}", "/courses", "/courses/{courseId}/words","/courses/{courseId}/sentences" , "/courses/{courseId}/words/random","/courses/{courseId}/sentences/random").permitAll()
                         .requestMatchers(HttpMethod.POST, "/courses/{courseId}/users/{userId}",
-                                "/courses/{courseId}/words/translate", "/courses/{courseId}/words/foreign").permitAll()
+                                "/courses/{courseId}/words/translate", "/courses/{courseId}/words/foreign","/courses/{courseId}/sentences/translate","/courses/{courseId}/sentences/foreign").permitAll()
 
                         .requestMatchers("/users/{userId}/**", "/users", "/users/words/**").permitAll()
 
