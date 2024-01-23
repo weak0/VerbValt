@@ -68,7 +68,9 @@ public class UserServiceImpl implements UserService {
     public List<WordDto> getUsersWord(Long userId) {
         User userFromDb = getUserFromDb(userId);
         List<Word> words = userFromDb.getWords();
-        validUserWords(words);
+        if(words.isEmpty()){
+            return List.of();
+        }
         return words.stream()
                 .map(word -> WordDto.builder()
                         .wordId(word.getId())
