@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserCourseRepository extends JpaRepository<UserCourse,Long> {
-    Optional<UserCourse>findUserCourseByUserId(Long userId);
     List<UserCourse> findByUserId(Long userId);
+    Optional<UserCourse> findByUserIdAndCourseId(Long userId, Long courseId);
 }
