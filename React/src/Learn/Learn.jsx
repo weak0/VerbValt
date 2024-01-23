@@ -16,11 +16,11 @@ const Learn = (props) => {
             </div>}
             {learnType == learnTypeEnum.Words &&
                 <div className='dialog-box'>
-                    <LearnWords courseId={courseId} />
+                    <LearnWords courseId={courseId} type="words" />
                 </div>}
             {learnType == learnTypeEnum.Sentences &&
                 <div className='dialog-box'>
-                    <LearnSentences courseId={courseId} />
+                    <LearnWords courseId={courseId} type="sentences" />
                 </div>}
 
         </div>

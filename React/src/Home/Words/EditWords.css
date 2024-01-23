@@ -1,0 +1,40 @@
+.word-table {
+
+    table-layout: fixed;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    background-color: blueviolet;
+    padding: 0.2rem;
+}
+
+.word-table th, .word-table td {
+    text-align: center;
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    color: white;
+    padding: 0.5rem;
+    width: 30.33%;
+}
+.word-table th {
+    background-color: blueviolet;
+}
+
+.word-table button {
+    background-color: rgb(9, 136, 41);
+    color: rgb(255, 254, 254);
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+
+.word-table .button-delete {
+    background-color: #f44336;
+}
+.word-table input {
+    padding: 0.5rem;
+}
