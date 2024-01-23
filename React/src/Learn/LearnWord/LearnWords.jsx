@@ -36,7 +36,7 @@ const LearnWords = (props) => {
   }
 
   const checkUserWord = async (wordId, foreignWord) => {
-    const response = await fetchData(`users/${data.user.id}/${type}/foreign`, "POST", { userId: data.user.id, wordId: wordId, word: foreignWord })
+    const response = await fetchData(`users/${type}/foreign`, "POST", { userId: data.user.id, wordId: wordId, word: foreignWord })
     setMessage(response.status)
     getRandomWord()
     setTimeout(() => {
