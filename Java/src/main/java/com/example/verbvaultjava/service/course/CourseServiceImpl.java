@@ -151,7 +151,7 @@ public class CourseServiceImpl implements CourseService {
                 .findFirst()
                 .orElseThrow(() -> new CourseNotFoundException("Given word do not exist in that course !"));
         String response;
-        UserCourse userCourse = getUserCourse(userId);
+        UserCourse userCourse = getUserCourse(userId, courseId);
         if (courseWord.getTranslation().equals(word)) {
             int progress = userCourse.getProgress();
             progress++;
@@ -181,7 +181,7 @@ public class CourseServiceImpl implements CourseService {
                 .findFirst()
                 .orElseThrow(() -> new CourseNotFoundException("Given sentence do not exists in that course"));
         String response;
-        UserCourse userCourse = getUserCourse(userId);
+        UserCourse userCourse = getUserCourse(userId, courseId);
         if (courseSentence.getForeignSentence().equals(foreignSentence)) {
             int progress = userCourse.getProgress();
             if (progress < 80) {
@@ -213,7 +213,7 @@ public class CourseServiceImpl implements CourseService {
                 .findFirst()
                 .orElseThrow(() -> new CourseNotFoundException("Given word do not exists in that course"));
         String response;
-        UserCourse userCourse = getUserCourse(userId);
+        UserCourse userCourse = getUserCourse(userId, courseId);
         if (courseWord.getForeignWord().equals(foreignWord)) {
             int progress = userCourse.getProgress();
             if (progress < 80) {
@@ -245,7 +245,7 @@ public class CourseServiceImpl implements CourseService {
                 .findFirst()
                 .orElseThrow(() -> new CourseNotFoundException("Given sentence do not exist in that course !"));
         String response;
-        UserCourse userCourse = getUserCourse(userId);
+        UserCourse userCourse = getUserCourse(userId, courseId);
         if (courseSentence.getTranslation().equals(sentence)) {
             int progress = userCourse.getProgress();
             progress++;
@@ -281,7 +281,9 @@ public class CourseServiceImpl implements CourseService {
         return courseSentence;
     }
 
-    private UserCourse getUserCourse(Long userId) {
-        return userCourseRepository.findUserCourseByUserId(userId).orElseThrow(() -> new UserNotFoundException("User with given id not found !"));
+    private UserCourse getUserCourse(Long userId, Long courseId) {
+        return userCourseRepository.findByUserIdAndCourseId(userId, courseId)
+                .orElseThrow(() -> new CourseNotFoundException("User with given id do not exists in that course !"));
     }
+
 }
