@@ -1,17 +1,17 @@
 import "./App.css";
 import HomePage from "./Home/HomePage";
-import  FormRegister from "./Form/FormRegister";
-import  FormLogin from "./Form/FormLogin";
-import { useState } from "react";
-import { testuser } from "./user";
+import FormRegister from "./Form/FormRegister";
+import FormLogin from "./Form/FormLogin";
+import { useEffect, useState } from "react";
 
 function App() {
-  //localStorage.setItem('user', testuser);
-  const user = localStorage.getItem("user");
+  const [user, setUser] = useState();
+
+
 
   const [isRegisterActive, setRegisterActive] = useState(true);
   function isRegisterActiveHandler() {
-    setRegisterActive(prevState=>!prevState);
+    setRegisterActive(prevState => !prevState);
   }
   return (
     <>
@@ -26,13 +26,13 @@ function App() {
               <button>Get Started</button>
             </div>
             <div className="landingpage-actions">
-        <button onClick={isRegisterActiveHandler}>{isRegisterActive ? 'Sign In':'Sing Un'}</button>
-      </div>
-            {isRegisterActive ? <FormLogin /> : <FormRegister/>}
+              <button onClick={isRegisterActiveHandler}>{isRegisterActive ? 'Sign In' : 'Sing Un'}</button>
+            </div>
+            {isRegisterActive ? <FormLogin loginHandler={(token) => setUser(token)} /> : <FormRegister />}
           </div>
         </div>
       ) : (
-        <HomePage />
+        <HomePage loginHandler={() => setUser()} />
       )}
     </>
   );

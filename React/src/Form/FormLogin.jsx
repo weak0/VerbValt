@@ -1,6 +1,6 @@
 import "./Form.css";
 
-const FormLogin = () => {
+const FormLogin = ({loginHandler}) => {
 
   const login= async(e) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ const FormLogin = () => {
       const token = responseData.token;
     
       localStorage.setItem("token", token);
-      console.log(token);
+      loginHandler(token);
     }else {
       alert("Wrong email or password");
     }  

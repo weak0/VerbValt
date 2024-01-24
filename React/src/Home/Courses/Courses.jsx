@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import './Courses.css'
 import CourseDetails from './CourseDetails'
-import { isEmpty, learnTypeEnum } from '../../utils'
-import { testuser } from '../../user'
+import { learnTypeEnum } from '../../utils'
 import { fetchData } from '../../user'
-import { pageEnum } from '../../utils'
+import { data } from '../../user'
 
 
-const userId = testuser.id
 
 const Courses = (props) => {
+
 
     const { setupLearn } = props
     const [courses, setCourses] = useState([])
@@ -17,7 +16,7 @@ const Courses = (props) => {
     const [courseDetailsIsActiv, setCourseDetailsIsActiv] = useState(false)
 
     const getCourses = async () => {
-        const response = await fetchData("courses", "GET")
+        const response = await fetchData("courses", "GET", null, false)
         setCourses(response)
     }
 
@@ -28,7 +27,7 @@ const Courses = (props) => {
     }
 
     const startCourse = async (courseId) => {
-        await fetchData(`courses/${courseId}/users/${userId}`, "POST")
+        await fetchData(`courses/${courseId}/users/${data.user.id}`, "POST")
         getCourses()
     }
 
@@ -53,7 +52,7 @@ const Courses = (props) => {
                                 <img src="https://via.placeholder.com/300x200/333" alt="course" />
                             </div>
                             <div className='courses-actions'>
-                                {course.users.some(user => user.id == userId)
+                                {course.users.some(user => user.id == data.user.id)
                                     ? <button onClick={() => setupLearn(course.id, learnTypeEnum.Default)}> Learn</button>
                                     : <button onClick={() => startCourse(course.id)}>Start</button>}
                                 <button onClick={() => handleCourseDetails(course.id)}>Details</button>

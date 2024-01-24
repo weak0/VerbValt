@@ -11,7 +11,7 @@ import Words from "./Words/Words";
 import Learn from "../Learn/Learn";
 import { pageEnum, learnTypeEnum } from "../utils";
 
-const HomePage = () => {
+const HomePage = ({loginHandler}) => {
   const [page, setPage] = React.useState(pageEnum.Courses);
   const [currentCourse, setCurrentCourseId] = React.useState();
 
@@ -33,7 +33,8 @@ const HomePage = () => {
           <SiSpeedtest size={20} onClick={() => setPage(pageEnum.Learn)} />
         </div>
         <div className="homepage-sidebar-bottom">
-          <IoIosLogOut size={24} onClick={() => localStorage.clear()} />
+          <IoIosLogOut size={24} onClick={() => {localStorage.clear()
+            loginHandler()}} />
         </div>
       </div>
       <h1>VerbVault</h1>
